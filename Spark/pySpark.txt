@@ -1,0 +1,19 @@
+Spark Architecture:
+===================
+
+Pyspark's architure constists of the following components:
+
+Spark Driver: 
+-------------
+              The Spark Driver is Responsible to run program and creates the SparkSession,Which is the entry point
+       for Creating RDD's, DataFrames and DataSets.
+
+SparkSession:
+-------------
+           The SparkSession is the entry point for creating RDDs,DataFrames, and DataSets.It is responsible for coordinating the
+       Spark application and executing the user's code on the cluster.
+
+Cluster Manaer:
+---------------
+         THe cluster Manager is responsible for managing the resources(CPU,memory, and disk) of the cluster. Pyspark supports different cluster
+managers such as YARN,,Mesons, and Standalone.      
