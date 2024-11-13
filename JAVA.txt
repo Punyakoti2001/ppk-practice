@@ -1,0 +1,28 @@
+Java Memory Model:
+==================
+The Java Memory Model (JMM) governs how threads in Java interact with memory. 
+It guarantees that changes made by one thread become visible to others, providing a framework for safe multi-threading. 
+JMM ensures proper synchronization through constructs like `synchronized` blocks, `volatile` variables, and memory barriers. 
+It’s crucial for preventing data races and ensuring consistent behavior in multi-threaded Java programs. 
+Understanding JMM is fundamental for writing reliable and efficient concurrent code.
+
+Thread Stacks:
+--------------
+Each thread running within the Java virtual machine has its own thread stack. 
+Local variables for primitive types are fully stored on the thread stack and are not visible to other threads. 
+Even if two threads are executing the same code, they will create their own separate copies of local variables 
+for that code in their respective thread stacks
+
+How Thread Stack is created?
+-----------------------------
+=>When the thread is started, the Java runtime environment creates a new thread stack for the thread. 
+   The thread stack is initially empty.
+
+=>When the thread calls methodA(), the runtime environment pushes a new frame onto the thread stack. 
+   The frame contains the call stack and local variables for methodA().
+
+=>When methodA() calls methodB(), the runtime environment pushes another frame onto the thread stack. 
+   The frame contains the call stack and local variables for methodB().
+
+=>When methodB() returns, the runtime environment pops the frame for methodB() off the thread stack. 
+   When methodA() returns, the runtime environment pops the frame for methodA() off the thread stack.

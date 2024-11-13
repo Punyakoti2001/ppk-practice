@@ -1,0 +1,390 @@
+1>What are the common implementations of the ApplicationsContext?
+A) ->FileSystemXmlApplicationContext
+   ->ClassPathXmlApplicationContext
+   ->WebXmlApplicationContext
+
+2>What are the stereo Type annotation?
+A) 5 Types
+ ->@Component
+ ->@Service
+ ->@Repository
+ ->@Controller
+ ->@RestController
+
+3>What are different modules in spring?
+A) ->Data Access
+   ->web
+   ->AOP
+   ->core container
+   ->Instrumentation
+   ->Test
+
+4>What is spring web module?
+A)This module is  given by spring Framework
+  ->It is used to develope both MVC and REST Applications.
+  ->It works based on the Http Protocol Standard.
+  ->It is used to develop client-server and server-server apps.
+
+5>What is MVC?
+A)MVC(Model View Controller) It is an software architectural design pattern.
+ ->It separetes the functionality of an aplications into 
+      Three interconnected parts- Model,View and controller.
+
+6>What is Spring MVC?
+A)Java FrameWork which is used t develop dynamic web applications.
+ ->It follows the Model-Vies-Controller design pattern.
+ ->Model-A model contains the data of the applications.
+ ->Controller-A controller contains the bussiness logic of an application.
+ ->View-A view represents the provided information in a perticular format.
+ Like-JSP+JSTL, Thymeleaf, Apache Velocity, FreeMarker.
+
+7>What is front controller of Spring Mvc?
+A)Front Controller is aDispatcherSevlet Class present in 
+    org.springframework.web.servlet package.
+->It dispatches the request to the appropriate controller and 
+   manages the flow of the application. 
+
+8> What is cross-orign concept in spring Web?
+A)Cross-Origin Resource sharing (CORS) is a security concept that 
+  allows restricting the resource implemented in web browsers.
+ ->It prevents the javaScript code producing or consuming the requests
+   against different origin.
+ ->If your apps need to be connected using JavaScript apps like Angular
+  or ReactJS, then we need to allow those by adding this annotation.
+  ->@CrossOrigin(origins="http://localhost:8080").
+
+9> why do we need view Resolver in spring MVC?
+A)->View Resolver is responsible for rendering of models in the web browser.
+  ->The "InternalResourceViewResolver" is the internal view resolver in the spring Mvc.
+  ->There are some importent view resolver's in spring Mvc:
+     - AbstractcolverachingViewResolver
+     - XmlViewResolver
+     - UrlBasedViewResolver
+
+What is the difference b/w JPA and Hibernate?
+A)JPA is a specifications given by Sun MicroSystems, now part of Oracle.
+ ->By using JPA we cant do all the things for the applications,
+  we should use one of the Vendor or implementer such as Hibernate.
+ ->Hibernate is a implementation.
+
+10>What are some advantages of using JPA?
+A)DataBase Independent(Dialect)
+ ->Easy to Deplop Database Operations
+ -> JPQL/HQL sopport
+ -> Type(DataTypes)and Parameter Handling 
+
+11)
+  findAll(sort.by(fieldName))
+  findAll(sort.by(sort.Direction.DESE,"fieldName"))
+
+12) What are collections Mappings supported by JPA?
+A>List,set.
+
+13)What is PlatFormTranscationManager?
+A>PlatFormTranscationManager is an interface that extends the TranscationManager.
+  ->It is the central interface in spring's transcation infrastructure.
+  ->it enables @Transactional Annotation which does commit in case of the success 
+      and rollback in case of Exception/Failed.
+
+14)What is the use of the Dialect and Give some Examples?
+A> Dialect is a class it is defined in the JPA.
+  ->it generates the SQLs at RunTime based on our operations(like save,update, delete).When we calling save() method.[Generates insert Sql Query].
+	  ->if we want to move from one database to another databases then we need to change the dialect property in properties file.
+
+15)What is FetchType in JPA?
+A>It is used for SELECT operations used for Association Mapping or Collection Mapping.
+ =>FetchTypes are: Eager and Lazy.
+ Eager: Load Parent Entity along with its associate child entities.
+ ------
+        form DB table select operations.
+ 
+ Lazy: Load parent Entity form DB table on select operations.Later,calling child get() method,loads child entities.
+ -----
+
+Spring Boot:
+============
+
+1)What is Spring Security?
+A>Spring security is a separte module of the spring frameWork that focues on providing authentication and 
+  Authorization methods in the java applications.
+ 
+ ->It also takes care of the common security vulnerabilities such as CSRF attacks.
+
+ ->To use Spring security in web applications, we can get started with the simple annotations @EnalbleWebSecurity.
+
+2)What are some essential features of spring security?
+A>Supports te autentications and authorization in a flexible and comprehensive manner.
+ 
+->Java Authentication and Authorization Sevice (JAAS) is used for authentications purposes.
+
+->Allows Single Sign-On so that user can access multiple application with just on account(userName and password).
+
+3)What is spring security Authentication and Authorization?
+A>Authentication:-
+  ================   Verifying the identity of the user, using the credentials provided when accessing certan restricted resource.
+ 
+ Ex: An example is logging into a website with a userName and password.
+
+ Authorization:
+ ==============  This ensures the users can only access the parts of a resource that they are authorized to assess. 
+
+4)Explain securityContext and securityContextholder?
+A>securityContext: in this the informations about current authenticated user is stored.
+  ================
+ 
+  securityContextHolder: Retriving the currently authenticated user is easiest
+  ======================
+
+5)What is method security and why do we need it?
+A. The ROLE of the user is used to determine which user is authorized to access the resource.
+   ->A security measure applied to a method prevents unauthorized user and only allows authentic user.
+
+6)What do you mean by HASHING in spring security?
+A.Plain text PAssword not good to stored in the database.
+  ->Store encrypted passwords in a database.THis is called password hashing.
+    ->Encoding a string using hashing algorithms like:MD4,MD5,SHA(security hashing Algorithm)Like SHA256 SHA128 etc.
+
+7)What is passwordEncoder?
+A. Password Encoding is provided by spring security using the passwordEncoder interface.This interface defines two methods:
+
+  ->encode(): It converts a plain password into an encoded form.
+    =========
+  ->matches():It compares an encoded password from the database with a plian password(input by te user)that's been encoded using 
+    ==========  the same salting and hashing algorithm as the encoded password.
+
+8) Name security annotations that are alowed to use spEL
+A. @PreAuthorized,@PostAuthorize and @PreFilter,@PostFilter.
+  
+   ->@PreAuthorize: Used to apply a security expression before a method is executed.
+                     ex:@PreAuthorize("hasAuthority('ROLE_ADMIN')");@PreAuthorize(value="hasAuthority('ROLE_ADMIN','abc_ROle')")
+   -> @PostAuthorize: Used to apply a security expression after a method has executed.
+
+   ->But the old @Secured annotation cannot use it,for example you cannot write @secured("hasRole('ROLEADMIN')),but ypu can do @PreAutorize("hasRole('RoleName')).
+
+9)What is AutenticationManager in spring security?
+A.It says "How authentication will happens".
+  ->AuthenticationManager containes the references to all the AutenticationProviders.
+  ->AuthenticationManagers can perform one of Three action in the authenticate() method:
+    =>if valid return authenticate =true,
+    =>invalid throw AuthenticationException ,unable to find valid input returns null.
+
+10)What are some predefined filters used by spring security?
+A.
+ -> SecurityFilterChain: in this we perform the which endpoints want to authenticate and 
+ ->UserPasswordAuthenticationFilter:THis filter performs Authentication.
+ ->SecurityContextPersitenceFilter:This filters restores Authentication from the cookie.
+ ->OncePerRequestFilter:
+
+11)What does @ and # is used for in spring expression Language(EL)?
+A. The @ is used to reference a spring bean.
+  -># is used to reference a parameter  on the method you ae securing.
+
+12)Waht do you mean by session management in spring security?
+A.Session Managemtent refers to securing and managing multiple users session against their request.
+ ->TO control Http sessions,Spring security uses the following options:
+    =>sessionManagementFilter and 
+    =>sessionAutheticationStrategy.
+
+ ->SessionManagementFilter- takes care of the JSESSION ID whether it is avalid or not.
+ ->SessionAuthenticationStrategy- takes care of session timeout,session-ids etc.
+
+13)Explain salting and its usage?
+A.Spring security automatically applies salting since version 3.1.
+ ->Salting is the process if ombining random data with the password befor password hashing.
+ ->salt improves hashing by increasing its uniqieness and complexity.
+ ->Hashing passwords are then stored in adatabase, along with salt.
+
+14)WHich Servlet Filter, intercepts all the incomming requests send to an application?
+A.Filter implemention named DelegatingFilterProxy that allows bridging between the servlet container's lifeCycle and Spring's ApplicationContext.
+
+15)To Secure Which layer @EnableGlobalMethodSecurity annotation is used?
+A.we can use @EnableGloabalMethodSecurity annotation to secure your service Layer.
+
+
+MICRO SERVICE:
+==============
+
+1)Explain SOLID Principle?
+A. S->single Responsibility Principle(SRP):A class should have one and only one reson to change.
+                                 Ex:Class Student ->in this class only related to the student task or work should be done.Not the Different class works or Task.
+
+   O->Open-Closed Principle(OCP):open for extention and close for modification.
+                         Ex:There is a Employee Object with all operations of the Employee. After few Years you want to Contract and permanent employees.
+                            So in that sutiation you cannot modify the Previous Employee Class Because there may be a chance of distrubing te logic of the code .
+                           So that we will be extending the Employee Class to Aother classes like ContractEmployee and PermanentEmployee and extending the logic what you want.        
+  
+   L->Liskov Substitution Principle(LSP): SubTypes must be substituted for their base type.
+                                         Ex:Take a Coffee Class And the derived classes of it should be produce related to the coffee not other than that.
+
+   I->Interface Segregation Principle(ISP):The dependency of one class to another one should depend on the smallest possible interface.
+                                            ->Insted of one long interface many small interface are prefered based on groups of methods,each one serving one submodule.
+
+
+   D->Dependency Inversion Principle(DIP): Depend upon Abstractions (Interfaces) Not upon concrete classes.
+
+2)What is spring cloud, and whar are its key features?
+A. Spring cloud is a framewrok built on to of springBoot.
+  ->used for development and deployment of microservices.
+  ->Key features:Service discovery and registration,load balancing,circute breaking, distributed configuration, API GateWay,and distributed tracing.
+
+3)What  is circuit breaking,and how is it implemented using spring cloud?
+A.It is pattern that prevents cscading failures in microservices.
+ ->Circuit breaking is implemented using the Netflix Hystrix(old library) library/Resillence4J.
+ ->Monitors the health of dependent services and if failures occur,, opens the circuit to stop sending requests.
+ -It ensures the overAll system stability. 
+
+4)What is load balancing and how is it handled in microservices?
+A. Distribution of client request accross multiple instances of a service.
+  ->Spring CLoud integrates with load balancers like Netflix Ribbon(legacy)/Load balancer.
+  ->These are slient-side load balancing.
+  ->Handle load distribution without manual configuration.
+
+5)Whar are the tools used to arrgeate microservices log files?
+A.OpenTelemetry-to collect the mesurements and collect the logs,matrices,traces.
+->Grafana-For visulization of the logs ,matrics and traces.
+->premethus-TO collect the matrics.
+->loki-To produce the logs.
+->sleuth-to produce the traces.
+
+
+Exchange in Rabbit MQ?
+A.producer cannot directly broadcast the messages to the queue.
+It forwards the message to the exchange, The Exchange forwards it to the right queue, based on the routing key, then the client
+will subscribes to the queue finally gets it.
+
+
+
+JAVA
+====
+Why pointers are not used in java?
+A)Since JVM is responsible for implicit memory allocation,thus in order to avoid direct access to memory by the user,pointers are discouraged in java.
+
+
+What does the JIT compiler?
+A)Where the JDK will compile and convert the code into the Byte Codes.
+
+In JRE there will be Interpreter and JIT which helps to make understand to the bytecode into native machine code at runtime.
+ were The interpreter will go line by line it take too much time to make understand the byte code to native machine code,time taking is more.
+So, the JIT compile make fast and optimize the code to the specific machine.
+
+Transcational Propagation:
+=========================
+1>Propagation.Required(Default) ->It create transcation if the transcation is not present.or Else it uses the same transcation throughout the application.
+                                Ex:If any exception occured, all the transcations will get rollback.
+2>Propagation.Required_New -> It create Transcation for every time in the application.
+                             Ex:If n no. of transcation get completed, then one of the trancation occured The transcation get terminated.
+                                   But the transcations before these will be commited.
+3>Propagation.Mandatory ->if the method is annotated with @Transcational with the attribute Propagation.Mandatory.
+                 Ex: There is Two methods 
+               Let method A() and method B().
+ the method B() is calling from the method A(),
+ The method B() is annotated with these attribute and method A() without any annotation.
+If we run the application and transcation happening we will get the error.
+Because The calling of method B() is not annotated with @Transcational so it occurs.
+So,the method which is calling the annotated Propagation.Mandatory method. must contain @Transcational.
+
+4>Propagation.Never ->It is opposite to Propagation.Mandatory attribute.
+
+the method which is calling the annotated Propagation.Never ,method.  must not contain @Transcational.
+
+5>Propagation.Support  -> It means If the Transcation is already present then it uses. little bit similar to Propagation.Required attribute.
+
+6>Propagation.Not_Support -> It means The method is not support the @Transcational annotation 
+
+
+Why String is immutable?
+A>
+  ->String pool requires string to be immutable othewise shared reference can be changed for anywhere.
+  ->Security because string is shared on different area like file system, networking connection,dataabase connection, Having immutable string allows 
+    you to be secure and safe because no one change reference of string once it gets created. 
+
+What methods does the object Class Have?
+A> ->clone()
+   ->equals()
+   ->finalize()
+   ->getClass()
+   ->hashCode()
+   ->toString()
+   ->notify()
+   ->notifyAll()
+   ->wait()
+
+  
+ JUNit for Delete in springboot
+===============================
+import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.*;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+import javax.persistence.EntityNotFoundException;
+
+class UserServiceTest {
+
+    @InjectMocks
+    private UserService userService;
+
+    @Mock
+    private UserRepository userRepository;
+
+    @BeforeEach
+    void setUp() {
+        MockitoAnnotations.openMocks(this);
+    }
+
+    @Test
+    void deleteUserById_whenUserExists_shouldDeleteUser() {
+        // Arrange
+        Long userId = 1L;
+        when(userRepository.existsById(userId)).thenReturn(true);
+
+        // Act
+        userService.deleteUserById(userId);
+
+        // Assert
+        verify(userRepository, times(1)).deleteById(userId);
+    }
+
+    @Test
+    void deleteUserById_whenUserDoesNotExist_shouldThrowException() {
+        // Arrange
+        Long userId = 1L;
+        when(userRepository.existsById(userId)).thenReturn(false);
+
+        // Act & Assert
+        EntityNotFoundException thrown = assertThrows(EntityNotFoundException.class, () -> {
+            userService.deleteUserById(userId);
+        });
+
+        assertEquals("User not found with id: " + userId, thrown.getMessage());
+
+        // Verify that the deleteById method is never called
+        verify(userRepository, never()).deleteById(userId);
+    }
+}
+
+Explanation:
+============
+@InjectMocks: This annotation injects the UserService object into the test, while automatically injecting the mock objects.
+
+@Mock: This creates a mock object for UserRepository.
+
+when(userRepository.existsById(userId)).thenReturn(true): This simulates the existsById method returning true, indicating that the user with userId exists.
+
+verify(userRepository, times(1)).deleteById(userId): This checks that the deleteById method of UserRepository is called exactly once when the user exists.
+
+Testing Exception: In the second test, EntityNotFoundException is expected to be thrown when the user doesn't exist. We verify that the exception is correctly thrown and that the deleteById method is never called using verify(userRepository, never()).deleteById(userId).
+
+
+
+
+Key Differences:
+
+Feature	                                        Spring	Spring Boot	Hibernate
+Purpose	Comprehensive framework for enterprise Java	Simplified development of standalone Spring applications	ORM framework for mapping Java objects to databases
+Configuration	XML or annotations	Autoconfiguration and properties files	Configuration files (XML or annotations)
+Components	Spring Core, MVC, Data, Security, Batch	Embedded servers, starters, actuators	Core, Query, Criteria, Session
+Focus	General-purpose framework	Rapid application development	Object-relational mapping

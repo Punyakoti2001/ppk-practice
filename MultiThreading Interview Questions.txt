@@ -1,0 +1,42 @@
+What is Multi Threading and how is it diff from multi tasking?
+A.Multithreading is a specialized form of multitasking.
+  Two types of multitasking:
+  1>Process - based multitasking
+  2>Thread - based multitasking
+
+Process-based multitasking is executing several tasks simultaneously where each task is separated independent
+=========================    process is Process-Based multitasking.
+
+For ex:  process based multitasking enab,les you to run the java IDLE at the same time that you are using a text
+--------  editor or visiting a web site using chrome.
+
+
+Thread-Based multitasking is executing several tasks simultaneously where each task is a separate independent part
+=========================  of the same program(called Thread).
+ By using ProcessExplorer=>Threads ,,here we can see how many threads working . 
+
+Thus, process-based multitasking deals with the "big picture". and thread-based multitasking handles the deatails.
+
+
+
+Which is better process based multitasking or thread based multitasking and why?
+A.Thread based multitasking is better.
+ =>Multitasking threads require less memory than multitaskinf processes.
+ =>Processes are heavyweight task that require their own seperate address spaces.
+ =>Threads, on other hand, are leighter weight.They share the same address space and cooperatively share the same
+   heavyweighte process.
+  
+What is a THread?
+A.Thread is a light-weight processes within a process.
+  Java creates threads by using a "Thread Class".
+ All Java program have at least one thread, Know as the main Thread. Which is created by te Java virtual Machine(JVM) at the program's start ,When the main() method
+  is invoked with the main thread.
+
+Types of Threads in Java?
+A.There are two types of thread - user thread and demon thread.
+ 
+ ->User Threads are created by java sevelopers.Eg main thread, all threads created inside main method(child threads of main thread) are non-daemon/user thread by default, because main thread is non-daemon.
+  
+ ->Daemon thread is a low priority threas that runs in background to perform tasks such as garbage collection(gc) ets.,
+ ->When all user threads finish their execution.JVM terminates itself when all the user threads finish their execution, JVM does not care wheather Daemon thread is running or not, if JVM finds running daemon thread,
+    it termintates the thread and after that shutdown itself.

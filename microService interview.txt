@@ -1,0 +1,109 @@
+Types of Asynce communication
+A. ->Point- to - Point  (In this we have Queues)
+     explaination:- In these there will be the producer and consumer .when the consumer receives the message the message in the memory of the Queue 
+                                                                                                                             will get deleted.
+           Ex: Rabbit MQ, Active MQ for the point -to- point communication.
+   ->Publisher - Subscriber (In this we have topics)
+     >In publisher-subscriber messageing-based communication ,the topic in the message broker will be used to store 
+       the message sent by the publisher and then subscribers that subscribe to the topic will consume that message.
+     >Unlike point to point pattern, the message will be ready to consume for all suscribers and the topic can have one or more subscribers,
+       The message remains persisent in a topic until we delete it.
+
+In messaging-based communication,the services that consume messages,either in the form queue or topic, 
+must known the common message structure that is produced or published by producer or publisher.
+   Ex:Kafka,Amazon SNS etc.
+
+What is Bean Life Cycle?
+   When we talk about the life cycle of a living thing as a general term,
+          It means when & how it is born, how & what it has done throughout its life, 
+          and when & how it has died. Similarly, the bean life cycle refers to when & how the bean is instantiated, 
+          what action it performs until it lives, and when & how it is destroyed.
+
+What are Spring Bean Life Cycle Methods?
+When a Spring Container creates a bean, it provides two methods to every bean by default. These are:
+
+1) public void init() 2) public void destroy()
+
+However, we can change the names of methods, but method signature must be the same. If we remain the method names as it is, the code becomes easy to understand.
+
+When are the Bean Life Cycle Methods called?
+The init() method is called after bean construction and before requesting an object. destroy() method is called just before the destruction of a bean.
+
+What are the purpose of implementing Life Cycle Methods?
+init(): If we want to initialize anything such as loading some configurations, creating database connections, we can write that code in init() method.
+
+destroy(): If we want to cleanup something such as closing database connections, we can write that code in destroy() method.
+
+=>What are the different approaches to configure Spring Bean Life Cycle Methods?
+There are three approaches to configure Spring Bean Life Cycle methods:
+
+1) Using XML (also called Declarative Approach)
+
+2) Using Spring Interfaces (also called Programmatic Approach)
+
+3) Using Annotations
+
+
+Saga Pattern
+============
+ The saga pattern [rovides transcation management with using a sequence of local transactions of microservices.Every microservices has its own database and it can,
+ able to manage local transcation in atomic way with strict consistency.
+ 
+->So saga pattern grouping these local transcations and sequentilly invoking one by one. Each local transcation updates the database and publishes an event to trigger the next local transcation.
+->If one ,of the step is failed, then saga pattern trigger to rollback transactions that are a set of compensating transcations that rollback the changes on previous microservices and restore data
+ consistency.
+
+ 
+
+When we face an issue like slowdown any one of the microservice in distrubuted application how do you find the perticular microservice.
+A. By using Sluth and ZipKin we an find the slow microservice in the application.
+  Sluth  -> will provide The service name, trace id, span duration.
+  ZipKin -> In this we can Visulize same as the sluth.
+
+How you track exception in a microservices environment?
+
+
+Session Management in Spring Boot
+=================================
+https://medium.com/@nagarjun_nagesh/session-management-in-spring-boot-f1a25a473a0f
+
+@Configuration
+@EnableWebSecurity
+public class SecurityConfig extends WebSecurityConfigurerAdapter {
+
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+        http
+            .sessionManagement()
+                .maximumSessions(1)
+                .maxSessionsPreventsLogin(true)
+                .sessionFixation()
+                    .changeSessionId()
+                .and()
+            // Other configurations
+    }
+}
+
+
+when does the dependency conflits occurs in spring boot?
+========================================================
+
+Multiple Versions of the Same Dependency:
+-----------------------------------------
+Scenario: Your project includes two or more versions of the same library through direct or transitive dependencies.
+
+Transitive Dependency Conflicts:
+--------------------------------
+Scenario: A Spring Boot starter or dependency pulls in other libraries as transitive dependencies, and those libraries themselves have dependencies that clash.
+Example: If you are using spring-boot-starter-web and spring-boot-starter-security, and both bring in different versions of Jackson libraries, it could lead to serialization or deserialization issues at runtime.
+
+1. Use Maven or Gradle to Analyze Dependencies
+Maven: Run mvn dependency:tree to see the full dependency hierarchy and identify conflicting versions.
+Gradle: Run ./gradlew dependencies to inspect the dependency tree in Gradle projects.
+
+
+** Eureka is the client side service discovery
+===========================================
+
+** Server side service discovery is NGINX,AWS
+=============================================
