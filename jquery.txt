@@ -1,0 +1,3 @@
+JQuery: It simplifies the JavaScript.
+======
+ It is a JavaScript library.

@@ -1,0 +1,48 @@
+In application.properties file
+==============================
+spring.servlet.multipart.enable =true
+spring.servlet.multipart.max-file-size=100MB
+spring.servlet.multipart.max-request-size=10MB
+
+
+
+
+
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.http.ResponseEntity;
+import org.springframework.http.HttpStatus;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
+@RestController
+@RequestMapping("/api/files")
+public class FileUploadController {
+
+    // Directory where the file will be stored (change as necessary)
+    private static final String UPLOAD_DIR = "uploads/";
+
+    @PostMapping("/upload")
+    public ResponseEntity<String> uploadFile(@RequestParam("file") MultipartFile file) {
+        try {
+            // Create directory if it doesn't exist
+            Path uploadPath = Paths.get(UPLOAD_DIR);
+            if (!Files.exists(uploadPath)) {
+                Files.createDirectories(uploadPath);
+            }
+
+            // Store the file in the directory
+            Path filePath = uploadPath.resolve(file.getOriginalFilename());
+            Files.copy(file.getInputStream(), filePath);
+
+            // Return success response
+            return ResponseEntity.ok("File uploaded successfully: " + file.getOriginalFilename());
+        } catch (IOException e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to upload file");
+        }
+    }
+}

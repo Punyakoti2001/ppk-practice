@@ -1,0 +1,835 @@
+There are lots of new features which were added in Java 8. Here is the list of important features which are mostly asked as java 8 interview questions:
+
+Lambda Expression
+Stream API
+Default methods in the interface
+Functional Interface
+Optional
+Method references
+Date API
+Nashorn, JavaScript Engine
+
+Main advantages of using Java 8?
+More compact code
+Less boilerplate code
+More readable and reusable code
+More testable code
+Parallel operations
+
+Interview question on java 8 Lambda expressions is a very commonly asked question :
+Lambda expression is an anonymous function ( without name, return type and access modifier and having one lambda symbol )
+
+Functional interfaces are those interfaces which can have only one abstract method .
+
+It can have static method, default methods.
+
+There are many functional interfaces already present in java such as  eg : Comparable, Runnable
+
+
+How lambda expression and functional interfaces are related?
+Lambda expressions can only be applied to abstract method of functional interface.
+
+As we know Functional interface is an interface with Exactly One Single Abstract method and can have multiple Static or default methods.
+
+To create our own Functional interface, You can do following steps:
+Create An interface
+Annotate that with @FunctionalInterface.
+Define exactly one Abstract method.
+There is no restriction on number of static and default methods defined in such and interface.
+
+Java can implicitly identify functional interface but still you can also annotate it with @FunctionalInterface . It just give you the security that in case if u by mistake add 2 abstract methods then Compiler will throw compile time error.
+
+Method Reference :
+EG : MethodReferenceDemo and FunctionalInterfaceDemo
+
+Method reference is replacement of lambda expressions. It is used to refer method of Functional interface to an existing method. Mainly it is used for code reusability. 
+
+Functional Interface’s Abstract method can be mapped to specific existing method using double colon operator (::) . This is Method reference.
+
+Hence Method reference is an alternative to Lambda expressions. 
+
+Whenever we have existing Implementation of Abstract method of our Functional interface then we can go for method reference. If no such method like testImplementation() is available then go for lambda expressions.
+
+----------------------------------------------------------------------
+
+Few questions we covered like:
+
+What are defaults methods?
+Default method is a way for adding  new methods to the interface without affecting the implementing classes. Hence with this new feature Java people defended many compile time errors that may arise due to unimplemented methods of interface. 
+
+The use of these default methods is “Backward Compatibility” which means if JDK modifies any Interface (without default method) then the classes which implement this Interface will break.
+
+On the other hand, if you add the default method in an Interface then you will be able to provide the default implementation. This won’t affect the implementing classes.
+
+Q) Is it necessary to override default methods of interface in java 8?
+Default methods have dummy implementations.
+Implementing classes if ok with dummy implementation then use dummy implementation of default methods
+If not satisfied then they can override and provide their own implementation.
+
+Q) Is the default keyword one of the access modifiers?
+Default is not the access modifier like public or protected or public
+
+Q) How to override default methods?
+
+You can override the default method by keeping the same method signature (name + arguments) 
+
+Removing default keywords because in class default keyword is used in switch case to denote default case if no previous cases matched. So you cant use the Default keyword in Class
+
+Adding Public as access modifier as in java 8, by default all methods are public so in child, u cant reduce the visibility of overridden default method.
+Giving our own implementation.
+
+
+Q) Why Static methods were introduced in JAVA8
+Only reason for introducing static methods in the interface is that you can call those methods with just interface name. No Need to create a class and then its object.
+
+Since Interface can never contain :
+Constructors,
+Static blocks,
+Nothings are costly in terms of memory and performance.
+
+Hence we don’t need to create an object and hence if you have everything static, then for interface rather than class
+
+ ( You have this flexibility only after java 8, before that you need to create a class)
+
+
+Q) Are Static Methods available to implementing classes by default?
+Static methods are not available for implementing classes.
+
+They are not default methods. They are static.
+
+Hence you can call these methods using the Interface name explicitly from the implementing classes as implementing classes won't have access to these methods directly. (This is the disadvantage of static methods of interface that its not available to implementing classes.)
+
+Java 8 New Features Predicate, Function, Consumer, Supplier, Streams, Parallel Stream's and many more topics.
+
+----------------------------------------------------------------------------
+
+Lambda Expression
+Stream API
+Default methods in the interface
+Predicate
+Functional Interface
+Optional
+Method references
+Date API
+Nashorn, JavaScript Engine
+
+Main advantages of using Java 8?
+More compact code
+Less boiler plate code
+More readable and reusable code
+More testable code
+Parallel operations
+
+Q) What are predicates? 
+Predicate is a predefined Functional Interface (Having only 1 abstract method).
+The only abstract method of predicate is test(T t):
+public boolean test(T t);
+Whenever we want to check some boolean condition then you can go for Predicates. 
+
+Q) How to use Predicates? 
+Say if you need to test if the length of the given string is greater than or equal to 5. Then in such situations where you need to test conditions, use test() method of predicate.
+
+Q) Type parameter and return types of Predicates?
+Input to predicate can be anything like 
+Hence only 1 type argument is required which is input type in predicate.
+Return type is not required as its always Boolean only.
+
+Q) Advantages of Predicates?
+Code Reusability
+
+If you have same conditions being used 100 times in a program then you can write once and just use 100 times with checkLength.test(different string to be tested).
+
+Conditional checks are holded by Functional interfaces.
+
+Q) What is Predicate joining?
+You can combine predicates in serial predicate
+
+Three ways to join :
+And
+Or
+Negate
+
+
+
+Q) What are Functions
+Function is also a predefined Functional Interface (Having only 1 abstract method).
+
+The only abstract method of Function is   apply(T t);
+
+ R apply(T t);
+
+Given some input perform some operation on input and then produce / return result (not necessary a boolean value).
+
+This takes 1 input and returns one output. 
+In predicate we used to take 1 input and return type is always boolean. 
+In function return type is not fixed hence we declare both input type and return type.
+
+Q) What is Functional chaining
+
+We can combine / chain multiple functions together with andThen .
+
+There are two ways to combine functions:
+ f1.andThen(f2).apply(Input);  - first f1 then f2
+f1.compose(f2).apply(Input)  - first f2 then f1
+
+
+Multiple functions can be chained together like :
+f1.andThen(f2).andThen(f3).andThen(f4).apply(Inputs);
+
+---------------------------------------------------------------------------------
+
+Consumer :  It will consume Item. Consumers never return anything (never supply), they just consume.
+
+Consumer Chaining :
+We can combine / chain multiple consumers together with andThen .
+
+There is only one ways to combine consumers:
+ c1.andThen(c2).apply(Input);  - first c1 then c2
+
+No compose() in consumer.
+
+Multiple consumers can be chained together like :
+c1.andThen(c2).andThen(c3).andThen(c4).apply(Inputs);
+
+Supplier :
+It will just supply required objects and will not take any input
+Its always going to supply never consume / take any input.
+
+EG : always supply me current date.
+No chaining as no input is given to this. Only it gives u output.
+
+
+Advantages:
+Write once, use anywhere.
+
+Code Reusability
+
+BiConsumer Bisupplier :
+ What if we need 2 arguments for operation?
+
+Then we need Bi XYZ Functional Interfaces.
+
+
+There is no input in supplier so no 1 or 2 Input arguments needed. Hence no BiSupplier.
+
+Q) If we want to operate on 3 arguments then triPredicate? 
+
+There are no TriPredicate or TriFunction etc.
+
+No QuadPredicate No QuadFunction.
+
+Java 8 has inbuilt Functional interfaces that can take only 1 or 2 arguments no more.
+--------------------------------------------------------------------------------
+
+Stream :
+If we want to process bulk objects of collection then go for streams concept.
+Way to operate on collection in java 8 is Stream.
+Its a special iterator class that allows processing collections of objects in a functional manner.
+
+Eg : fetch all objects from collection of list whose value is greater than 15
+
+Why streams were introduced in java 8 if we already had java.io.stream?
+
+Java io streams is a sequence of characters or binary data which is used to be written to a file or to read data from a file.
+While streams java 1.8 is no where related to files, its related to collection object.
+Java io streams related to file whereas java 8 streams are related to collection object.
+Hence if we need to perform some operations on collection there we should go for streams.
+
+To represent group of collection as single entity then we should use collection concept.
+
+If we want to perform operation on bulk objects in collection then we should go for Streams.
+
+We can get stream object by :
+
+Stream s = collectionObject.stream();
+Once we get stream object we can process the object of collection.
+Processing of stream consists of 2 steps/ stages
+Configuration of stream
+Processing that configuration
+Configuration can be done by 
+Map 
+Filter
+
+Stream s = collectionObject.stream().filter(i 🡪 i % 2 ==0);
+
+What if we don’t want to filter out.
+We rather want to create new object against each existing stream object based on some function.
+
+EG in given stream create new object by squaring  its value
+
+If we want to fetch / filter objects from collection like eg : filter only even numbers from array list collection the use Filter for configuration of stream.
+
+ If we want to perform some operation on each objects of the collection then create another mapped object with different value(after operation is performed ) for each object of that collection, then use map.
+
+In filter, because of filtering, number of objects in filtered list is less than original list While in Map  same number of objects are there in both new and original list created.
+
+-------------------------------------------------------------------------
+
+Stream Processing -
+___________________________________________________________________________
+
+Collect - 
+If we want to collect elements of stream after filtering or mapping and add them to the required collection then use collect method.
+
+Count - 
+If we want to count how many elements are there in collection that satisfy given condition then use collect method.
+
+sorted - 
+If we want to sort elements inside a stream use this sorted() method.
+We can sort based on default natural sorting order 
+If we want to sort using customized sorting order then use comparator.
+
+Comparator 
+If we want to sort using customized sorting order then use comparator.
+
+Min Max-
+Min(Comparator)  will return the minimum value based on the defined comparator
+Max(Comparator)  will return the maximum value based on the defined comparator
+
+Foreach
+forEach() is a method . 
+All methods that we saw till now returned something, like min max value, sorted collection, etc
+This method does not return anything. 
+Rather This method takes lambda expression as argument and apply that lambda expression to each element present in that stream.
+
+toArray- 
+
+of() - 
+Stream concept is not applicable just for the collections it’s also applicable for “ANY GROUP OF VALUE”.
+Even for arrays you can use stream.
+Stream . Of() this method can take any group of values and convert them to stream so that multiple stream operations can be applied to it.
+
+Parallel Stream
+
+Java Parallel Streams came into picture after java 1.8.
+
+Its meant to utilize multiple cores of processor.
+
+Till Now our java code has 1 stream of processing where it executes sequentially.
+
+But when you use parallel streams, we divide code into multiple streams that executes parallely , on separate cores and final result is the outcome of individual cores outcomes combined.
+
+Sequential VS Parallel Streams.
+
+------------------------------------------------------------------------------
+Java 8 short-circuiting operations are just like boolean short-circuit evaluations in Java.
+
+In boolean short-circuiting logic, for example firstBoolean && secondBoolean, if firstBoolean is false then the remaining part of the expression is ignored (the operation is short-circuited) because the remaining evaluation will be redundant. Similarly in firstBoolean || secondBoolean, if firstBoolean is true the remaining part is short-circuited.
+
+Java 8 Stream short-circuit operations are not limited to boolean types. There are pre defined short-circuiting operations.
+
+Java 8 stream intermediate and terminal operations both can be short circuiting.
+Intermediate - limit()
+Terminal - findFirst(), findAny(), anyMatch(), allMatch(), noneMatch()
+
+ This method takes one (long N) as an argument and returns a stream of size no more than N
+
+Stream limit(long N) - Where N is the number of elements the stream should be limited to and this function returns new stream as output.
+
+Use Java 8 Stream.limit() method to retrieve only the first n objects and setting the maximum size. And it ignores the remaining values after size n. Stream.limit(long maxSize) returns a Stream of objects.
+
+As soon as limit() reaches the maximum number of items, it doesn't consume any more items and simply returns the resulting stream. Hence, we say that limit() is a short-circuiting operation.
+
+limit() returns the first n elements in the encounter order and not just any n elements.
+This is an intermediate operation.
+
+This is a good choice when working with infinite streams or infinite values.
+
+limit() method is invoked after calling the terminal operation such as count() or collect() methods.
+
+This returns a stream of elements with the size or max limit given.
+
+This works well in sequential streams. Not suggested using in the parallel streams such as larger or higher in size.
+
+maxSize can not be negative. If negative then it will throw IllegalArgumentException.
+
+ Optional findFirst()
+
+Returns the very first element (wrapped in Optional object) of this stream and before traversing the other.
+
+The terminal operation terminated on finding the first element, hence short-circuited.
+
+ findAny()
+
+Returns an Optional instance which wraps any and only one element of the stream.
+
+The behavior of this operation is explicitly nondeterministic; it is free to select any element in the stream. This is to allow for maximal performance in parallel operations; the cost is that multiple invocations on the same source may not return the same result. (If a stable result is desired, use findFirst() instead.
+
+For a sequential stream there won't be any difference between 'findFirst' and 'findAny'. But for a parallel stream findAny will return 'any' element rather than waiting for the 'first' element.
+
+boolean anyMatch()
+
+Tests whether any elements of this stream match the provided predicate. This terminal method will return as soon as it finds the match and will not transverse all the remaining elements to apply the predicate.
+
+boolean allMatch()
+
+Tests whether all elements match the provided predicate. It may return early with false result when any element doesn't match first.
+
+boolean noneMatch()
+
+Tests whether no elements of this stream match the provided predicate. It may return early with false result when any element matches the provided predicate first.
+
+-------------------------------------------------------------------------------------
+
+map vs flatmap is a very important questions in terms of java 8 interview questions and answers for experienced and freshers
+
+map vs flatmap comes under top java 8 interview questions and answers 
+
+How Map works in Java 8 
+
+The Stream.map() function performs map functional operation i.e. it takes a Stream and transforms it to another new Stream.
+
+It applies a function on each element of Stream and stores return value into new Stream. 
+
+The map operation takes a Function, which is called for each value in the input stream and produces one result value, which is sent to the output stream.
+
+
+How Flat Map works in java 8 
+
+Is the combination of a map and a flat operation
+
+This means you first apply the map function and then flattens the result.
+
+The key difference is the function used by map operation returns a Stream of values or a list of values rather than a single value, that's why we need flattening. When you flat a Stream of Stream, it gets converted into Stream of values.
+
+To understand what flattening a stream consists in, consider a structure like [ [1,2,3],[4,5,6],[7,8,9] ] which has "two levels". It's basically a big List containing three more List.  Flattening this means transforming it in a "one level" structure e.g. [ 1,2,3,4,5,6,7,8,9 ] i.e. just one list.
+
+In short,
+Before flattening - Stream of List of Integer
+After flattening - Stream of Integer
+
+-----------------------------------------------------------------------------------
+
+Q) What is Optional? Why and how can you use it?
+Optional Class was introduced in java 8 to  to avoid NullPointerException in java.
+
+NullPointerException is a term that every Java programmer is familiar with. It has the potential to cause your code to crash. It's also difficult to avoid without employing a lot of null tests. To address this, Java 8 added a new class Optional to the java.util package. It can aid in the creation of clean code that avoids the use of excessive null checks. We can define alternate values to return or alternate code to run by using Optional. This makes the code more readable because the developer can now see the previously hidden truths.
+
+Optional is a new class in the java.util package that was introduced in Java 8. It's used to show whether a value is present or not. The key benefit of this new construct is that it eliminates the need for excessive null checks and NullPointerException. It prevents NullPointerExceptions at runtime and aids in the development of clean and tidy Java APIs and applications. It's a Container that can only hold one value, just like Collections and arrays. Let's have a look at some examples of this new construct.
+
+Java 8's Benefits Optional:
+
+Null checks aren't necessary.
+NullPointerException is no longer thrown at runtime.
+We can create APIs that are neat and tidy.
+There will be no more. Code for a boiler plate
+
+----------------------------------------------------------------------------------
+
+Why do we need Grouping Collector? 
+Given a stream of objects, there are scenarios where these objects need to be grouped based on a certain distinguishing characteristic they posses. 
+
+E.G. -
+Create a map with key as Age and value as list of employees in that age group.
+
+This concept of grouping is the same as the ‘group by’ clause in SQL which takes an attribute, or a calculated value derived from attribute(s), to divide the retrieved records in distinct groups.
+
+Generally what we used to do to group by is -
+iterating over each object, checking which group the object being examined falls in, and then adding that object in its correct group. The group itself is held together using a Collection instance. 
+
+ grouping collector with single parameter
+
+The classification function passed to groupingBy() method is the method specified as "Employee.getAge()".
+
+As the end result of applying the grouping collector for achieving this we want a Map with keys as age and corresponding values as List of employees of that age.
+
+2 parameter Collectors.groupingBy()- uses a user specified Collector to collect grouped elements
+
+Whereas the 1st variant always returned a List containing the elements of a group, the 2nd variant of grouping collector provides the flexibility to specify how the grouped elements need to be collected using a second parameter which is a Collector. 
+
+So, instead of just storing the groups in resultant Map as Lists, we can instead store them in say Sets, 
+
+(Collectors.groupingBy(Employee.getAger(), Collectors.toSet()));
+
+-------------------------------------------------------------------------------------
+
+What is an Intermediate operation
+
+The operations which return another stream as a result are called intermediate operations. V imp part, they are lazy.
+Eg: 
+
+filter(), map(), distinct(), sorted(), limit(), skip()
+
+What is Terminal operation
+The operations which return non-stream values like primitive or object or collection or return nothing are called terminal operations
+
+You can chain multiple intermediate operations and none of them will do anything until you invoke a terminal operation. At that time, all of the intermediate operations that you invoked earlier will be invoked along with the terminal operation.
+
+Eg: 
+
+forEach(), toArray(), reduce(), collect(), min(), max(), count(), anyMatch(), allMatch(), noneMatch(), findFirst(), findAny()
+
+Intermediate Operations
+
+ They return stream.
+They can be chained together to form a pipeline of operations.
+Pipeline of operations may contain any number of intermediate operations.
+Intermediate operations are lazily loaded.
+They don’t produce end result.
+
+
+Terminal Operations 
+
+ They return non-stream values.
+They can’t be chained together.
+Pipeline of operations can have maximum one terminal operation, that too at the end.
+Terminal operations are eagerly loaded.
+They produce end result.
+
+-----------------------------------------------------------------------------------------
+
+Consumer :  It will consume Item. Consumers never return anything (never supply), they just consume.
+
+Consumer Chaining :
+We can combine / chain multiple consumers together with andThen .
+
+There is only one ways to combine consumers:
+ c1.andThen(c2).apply(Input);  - first c1 then c2
+
+No compose() in consumer.
+
+Multiple consumers can be chained together like :
+c1.andThen(c2).andThen(c3).andThen(c4).apply(Inputs);
+
+Supplier :
+It will just supply required objects and will not take any input
+Its always going to supply never consume / take any input.
+
+EG : always supply me current date.
+No chaining as no input is given to this. Only it gives u output.
+
+
+Advantages:
+Write once, use anywhere.
+
+Code Reusability
+
+BiCinsumer Bisupplier :
+ What if we need 2 arguments for operation?
+
+Then we need Bi XYZ Functional Interfaces.
+
+
+There is no input in supplier so no 1 or 2 Input arguments needed. Hence no BiSupplier.
+
+Q) If we want to operate on 3 arguments then triPredicate? 
+
+There are no TriPredicate or TriFunction etc.
+
+No QuadPredicate No QuadFunction.
+
+Java 8 has inbuilt Functional interfaces that can take only 1 or 2 arguments no more.
+
+-------------------------------------------------------------------------
+
+
+Garbage collection in java is a very crucial and complicated interview topic. It hides many complexities within.
+
+As an overview we can say that Garbage collection in java is an automatic process of  looking at heap memory, identifying which objects are in use and which are not, and deleting the unused objects. 
+
+An in use object, or a referenced object, means that some part of your program still maintains a pointer to that object.
+
+An unused object, or unreferenced object, is no longer referenced by any part of your program. So the memory used by an unreferenced object can be reclaimed. 
+
+Main Advantage of automatic garbage collection in java is that it removes the burden of manual memory allocation/deallocation from us so that we can focus on problem solving.
+
+Area where we get this object manages is heap :
+Whenever an object is created, it’s always stored in the Heap space and stack memory contains the reference to it. Stack memory only contains local primitive variables and reference variables to objects in heap space.
+
+Thus All Java objects are always created on heap in java. EG 
+CustomeObj s1 = new CustomeObj ()
+
+What are the different ways to make an object eligible for GC when it is no longer needed??
+1) Set all available object references to null 
+2) Make the reference variable to refer to another object 
+3) Creating Islands of Isolation
+
+In video we have seen live demo of all the three methods
+
+What is the purpose of overriding finalize() method?
+
+Finalize method in Java also called finalizer is a method defined in java.lang.Object 
+
+Its called by Garbage collector just before collecting any object which is eligible for GC. 
+
+Thus Finalize() method provides last chance to object to do cleanup and free any remaining resource
+
+In video we have seen live demo of overriding Object class's finalize method so that we can implement our customization before garbage collection is called.
+
+And many such java garbage collection interview questions are solved using live demo examples.
+Heap memory and generation strategy is covered in next section
+
+--------------------------------------------------------------------------------
+
+GC works in 2 steps :
+Marking : unreferenced objects are identified and marked as ready for garbage collection.
+Deletion / Deletion + Compaction : In this step objects marked previously is deleted.
+
+Memory is compacted after GC deletes the object so that remaining objects are in contiguous blocks at the start of heap memory.
+This compaction makes it easier to allocate memory sequentially after a chunk of allocated memory area  for new objects in heap
+
+“ HotSpot “ is the most commonly used JVM by Oracle.
+
+All HotSpot’s GC implements generational GC strategy ie. It categorizes the objects by ages.
+
+Heap area is divided into 3 sections i.e. 
+Young generation
+Tenured
+Permanent generation.
+
+This video contains step by step process of how  garbage collection sweeps unreferenced objects from these 3 areas and referenced objects are aged by one and moved to survivor spaces or old gen as and when required.
+
+----------------------------------------------------------------------------------
+
+Q) What is MultiTasking And Its types. In java interview question and Answers
+
+Performing  multiple tasks at one time . There are 2 types of multitasking :
+Process based multitasking
+Thread based multitasking
+
+Q) What is Multi threading & how is it diff from multi tasking asked In java interview question and Answers
+
+ Multithreading is a specialized form of multitasking.
+
+Process-based multitasking is executing several tasks simultaneously where each task is a separate independent process is Process-based multitasking . 
+For example, process based multitasking enables you to run the Java IDE at the same time that you are using a text editor or visiting a web site using chrome.
+
+Thread-based multitasking is executing several tasks simultaneously where each task is a separate independent part of the same program (called Thread).
+For instance,JUnit uses threads to run test cases in parallel. As an application, you can have computer games. You see objects in games like cars, motor bikes etc. They are just threads that run in the game application.
+
+Thus, process-based multitasking deals with the “big picture,” and thread-based multitasking handles the details
+
+
+Q)  Which is better process based multitasking or thread based multitasking and why is one of the most asked java interview question and Answers?
+ Thread based multitasking is better.
+
+Multitasking threads require less overhead than multitasking processes. 
+
+Processes are heavyweight tasks that require their own separate address spaces. 
+
+Threads, on the other hand, are lighter weight. They share the same address space and cooperatively share the same heavyweight process. 
+
+Interprocess communication is expensive and limited. Context switching from one process to another is also costly. In java interview
+
+Q)  Which is better process based multitasking or thread based multitasking and why?
+Inter Thread communication is inexpensive, and context switching from one thread to the next is lower in cost. 
+
+While Java programs make use of process-based multitasking environments, process-based multitasking is not under Java’s direct control. However, multithreaded multitasking is. 
+
+Q) What is a Thread
+
+Threads are light-weight processes within a process.
+Java creates threads by using a "Thread Class".
+
+ All Java programs have at least one thread, known as the main thread, which is created by the Java Virtual Machine (JVM) at the program’s start, when the main() method is invoked with the main thread.
+
+Q) Types of Thread in java
+
+There are two types of thread – user thread and daemon thread.
+
+
+Q) How to create a user thread in Java
+ Thread implementation in java can be achieved in two ways:
+
+Extending the java.lang.Thread class
+Implementing the java.lang.Runnable Interface
+
+
+When the JVM starts, it creates a thread called “Main”. Your program will run on this thread, unless you create additional threads yourself. The first thing the “Main” thread does is to look for your static void main (String args[]) method and invoke it. That is the entry-point to your program. If you create additional threads in the main method those threads would be the child threads of main thread.
+
+-----------------------------------------------------------------------------------------------
+
+Q) Difference between t.start() and t.run()
+In the case of t.start() a new Thread will be created which is responsible for the execution of run() method.
+
+But in the case of t.run() no new Thread will be created and run() method will be executed just like a normal method by the main Thread.
+
+In the above program if we are replacing t.start() with t.run() the following is the  output. Entire output produced by only main Thread. So Its sequential output always. First child then main / parent 
+
+
+Q) How to make a user thread to a Daemon thread
+
+ make a user thread to Daemon by using setDaemon() method of thread class.
+This method is used for making a user thread to Daemon thread or vice versa. For example if I have a user thread t then t.setDaemon(true) would make it Daemon thread. On the other hand if I have a Daemon thread td then by calling td.setDaemon(false) would make it normal thread(user thread/non-daemon thread).
+public boolean isDaemon(): This method is used for checking the status of a thread. It returns true if the thread is Daemon else it returns false.
+setDaemon() method can only be called before starting the thread. This method would throw IllegalThreadStateException if you call this method after Thread.start() method. (refer the example)
+The main difference between Daemon thread and user threads is that the JVM does not wait for Daemon thread before exiting while it waits for user threads, it does not exit until unless all the user threads finish their execution.
+
+Q) What are the tasks of start method
+
+Register the Thread with thread scheduler. So you just tell what a child thread should do, when and how it will be scheduled will be handled by scheduler.
+
+Call run method.
+
+Q) What if we don’t override Run method?
+Thread class Run method will be called and we won’t get any output.
+
+It’s basically useless as you are saying, please create a thread for me and that thread will do nothing for us. So why did u create it ?
+
+Q) Can we overload run method during multi threading?
+How do we overload? 
+May be by passing parameters?
+Yes you can but start () will call no arg run () only. 
+
+Q) Can we override start method of thread in multi threaded environment?
+If you override start () in your custom class then no initializations will be done by thread class for you. 
+
+Q) What is Multi threading & how is it diff from multi tasking asked In java interview question and Answers
+
+ Multithreading is a specialized form of multitasking.
+
+Process-based multitasking is executing several tasks simultaneously where each task is a separate independent process is Process-based multitasking . 
+For example, process based multitasking enables you to run the Java IDE at the same time that you are using a text editor or visiting a web site using chrome.
+
+Thread-based multitasking is executing several tasks simultaneously where each task is a separate independent part of the same program (called Thread).
+For instance,JUnit uses threads to run test cases in parallel. As an application, you can have computer games. You see objects in games like cars, motor bikes etc. They are just threads that run in the game application.
+
+Thus, process-based multitasking deals with the “big picture,” and thread-based multitasking handles the details
+
+-----------------------------------------------------------------------------------------------------
+
+What are Proxy Design Patterns?
+It’s a Structural design pattern.
+It lets you provide a substitute or placeholder for another object. 
+A proxy controls access to the original object, allowing you to perform something either before or after the request gets through to the original object.
+
+Roles in Proxy Design Pattern?
+Major roles used in this design patterns are :
+Subject – is an interface that exposes the functionality available to be used by the clients.
+Real Subject – is a class implementing Subject and it is the concrete implementation that needs to be hidden behind a proxy.
+Proxy – hides the real object by extending it and clients communicate to the real object via this proxy object. Usually, frameworks create this proxy object when the client request for the real object.
+
+Advantages of Proxy Design Pattern?
+Access control/protection given by proxy object: This is when you want only specific clients to be able to use the service object.
+Caching request results (caching proxy). This is when you need to cache results of client requests and manage the life cycle of this cache, especially if results are quite large.
+Logging requests (logging proxy). This is when you want to keep a history of requests to the service object.
+
+ What is Flyweight Design Patterns?
+It’s a Structural design pattern.
+A flyweight is a shared object that can be used in multiple contexts simultaneously. The flyweight acts as an independent object in each context.
+
+ Where to use Flyweight DP?
+When your application needs large number of objects that shares most of the common attributes called Intrinsic Attributes or properties and only few unique attributes called as Extrinsic attributes / properties. 
+
+We need to control the memory consumption by large number of objects – by creating fewer objects and sharing them across. 
+
+ When to use Flyweight DP?
+The number of Objects to be created by application should be huge.
+
+The object creation is heavy on memory and it can be time consuming too.
+
+The object properties can be divided into intrinsic and extrinsic properties, extrinsic properties of an Object should be defined by the client program.
+
+
+-------------------------------------------------------------------------------------------
+
+Deamon Thread 
+
+1) low priority auxillary threads
+2) all the left over threads are terminated by runtime environment
+
+type of object defines at compile time -> static binding
+type of object defines at runtime -> dynamic binding
+
+subclass type ref to parent class object -> instanceof
+
+Thread States -> new state -> runnable -> running -> waiting -> blocked -> terminated
+preamtive sheduling -> priority based
+time slicing sheduling 
+
+Rowset add support to jdbc api java beans component
+
+--------------------------------------------------
+Garbage Collections in java
+
+Garabage collection is a process of looking at heap area and identifying which objects are in use and which are not in use, in use objects means an object that can be direct reference or in direct refence.
+
+step 1: Marking phase
+mark the object which are in use and not in use
+
+step 2 : Normal Deletion 
+removes unreferenced object and leaving ref object to free space
+
+Step 2a : Deletion with compaction
+
+all the ref object moved to begining of the free space to allocate memory subsequentially then on
+
+Heap can be Broken into 3 parts
+1) Young generation  2) Olc generation   3) Permanent generation
+
+-> in young generation new objects are created and aged -> when young generation fills up minor grabage collection works
+
+-> if in young generation objects meets certain age they moved to old generation/tenured generation and major garbage collection works
+
+-> data related to metadata required by the jvm to describe the classes and methods of the application.
+
+Serial Gc
+Parallel Gc
+ 
+-----------------------------------------
+
+serialization vs externalization vs custom serialization
+
+
+KAFKA:
+=====
+- producer
+-consumer
+-consumer group
+-Topic
+-partition
+-offSet
+-Broker [Server]
+-cluster
+-zooKeeper
+
+
+CommitedOffSet-succesfully or completed read [upto which partition offset(indexing manner)] by the consumer.
+
+
+
+
+OAuth:
+======
+-> It is an Authorization FramWork.
+//-> Enables Secure third-party to user protected data.
+->It provides the data of the user to the third-party.
+
+
+Four(4) important roles (or) Actors
+===================================
+1>Resource Owner(user means me)
+2>client(From where you were login with google or any any other servers)
+   Ex: From Naukari you will be telling signIn by using Google. In these Senerio Naukari is the Client.
+   ===                                                                           ----------------------
+3>Authorization Server  (Gmail Authontication comes under these)
+4>Resource Hosting Server(Where as in gmail all our data will be present then this Gmail Will be our Resource Hosting Server)
+
+ 
+
+
+Monolithics vs MicroServices
+===============================
+
+Monolitics disadvantages:
+---------------------------
+->scaling the services
+->It is tightly Coupled
+
+Advantages:
+-----------
+->Integrating code is Easy
+->Monitoring
+->Transcation management is takecare easily
+
+MicroService disadvantages:
+----------------------------
+->Transcational Management is tough
+->Monitoring 
+
+Advantages:
+-----------
+->Scaling 
+->Loosely Coupled
+
+

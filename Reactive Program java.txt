@@ -1,0 +1,16 @@
+To Make Async in server side app we have Feature and CompletableFeature interface.
+
+Ex: code:
+==========================
+  CompletableFeature<User> userAsync = CompletableFeature.supplyAsync(()->userService.getById(userId));
+  CompleatableFeature<UserPreference> userPre = CompletableFeature.supplyAsync(()->userPreferenceService.getPreferencrByUserId(userId));
+
+  CompleatableFeature<Void> bothFeaturs = CompleatableFeature.allOf(userAsync , userPre );
+  bothFeaturs.join();
+  User user = userAsync.join();
+  UserPreference userPreference = userPre.join();
+
+return User; 
+=========================
+
+we can have n no.of service calls from the controller. no problem, the waiting will not happen.

@@ -1,0 +1,45 @@
+Git:
+---
+version control tool.used to track the project history
+
+Colaboration:
+------------
+->Group changes
+->Share code
+->you can know who changed,what they made,when they have done, code of your project.
+
+
+Two types of Version Control:
+----------------------------
+1)Centralized version control
+    ->storage
+    ->Tracking
+    ->Retrival
+2)Distributed version control
+    ->Cloning to there own machine
+    ->working copy
+    ->pull and push
+
+
+
+
+steps:
+=====
+
+s-1=> git clone <url>
+Make changes to the file
+s=2>git status 
+s-3=>stage all the files
+s-4=>git add .  (it is for all files to stage) or git add <filename>
+s-5=>git commit -m "first commit"
+s-6=>git push
+
+To create a branch
+------------------
+s-1=> git branch <branch name>
+s-2=> git checkout <branch name> ->to switch to the new branch
+s-3=> git status
+s-4=> git add .
+s-5=> git commit -m "message"
+s-6=> git push -u origin <branch Name>
+

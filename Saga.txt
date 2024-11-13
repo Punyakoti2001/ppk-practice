@@ -1,0 +1,5 @@
+SAGA PATTERN
+=============
+what is saga?
+A) The saga design pattern is a way to manage data coonsistency
+    accross microservices in an distributed transcation scenarios.

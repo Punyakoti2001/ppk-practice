@@ -1,0 +1,13 @@
+Common Thymeleaf Expressions:
+=============================
+Variable Expressions (${...}): Access model attributes and properties.
+Selection Expressions (*{...}): Access properties of the selected object (often used in forms).
+Conditional Expressions (th:if, th:unless): Conditional rendering.
+Iterative (th:each): Iterate over collections.
+
+
+In JSP, Java code can be written within various tags:
+
+Scriptlet Tag (<% ... %>): Used to write plain Java code within JSP.
+Expression Tag (<%= ... %>): Outputs the result of Java expressions directly.
+Declaration Tag (<%! ... %>): Declares variables or methods that can be used in the JSP.

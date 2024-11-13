@@ -1,0 +1,35 @@
+Design Patterns
+===============
+1.creational
+2.behavior
+3.structual 
+
+
+
+why design pattern?
+A. As Design patterns are well documented and understood by software architects,
+   designers and developers,then their applications within a specific solution will
+   likewise be well understood.
+ 
+ -> If we use design patterns we can reduce technical risks to the project by not having 
+    to employee a new untested design.
+
+1>creational design pattern
+----------------------------
+1.singleTon
+2.prototype
+3.Factory design
+4.Abstract Factory
+5.Builder
+
+
+Factory Pattern
+---------------
+In these pattern we donot expose the creation logic to the client anf refer the created
+ Object using a standard interface.
+
+->The Factory Pattern is also known as Vertual Constructor.
+
+Step:
+----- 1)Create main class which call factory class.
+      2)Factory class returns required class instance.

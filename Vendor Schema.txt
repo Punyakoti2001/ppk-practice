@@ -1,0 +1,63 @@
+CREATE TABLE vendor (
+    vendor_id SERIAL PRIMARY KEY,
+    vendor_name VARCHAR(100) UNIQUE NOT NULL,
+    email VARCHAR(100) UNIQUE NOT NULL,
+    contact_name VARCHAR(50) NOT NULL,
+    contact_title VARCHAR(50) NOT NULL,
+    phone_no VARCHAR(20) NOT NULL,
+    mobile_no VARCHAR(20),
+    gst_no VARCHAR(20) UNIQUE NOT NULL,
+    start_date DATE NOT NULL,
+    end_date DATE,
+    status BOOLEAN DEFAULT TRUE
+);
+
+CREATE TABLE vendor_address (
+    address_id SERIAL PRIMARY KEY,
+    street_name VARCHAR(100),
+    city VARCHAR(50),
+    state VARCHAR(50),
+    zip_code VARCHAR(5),
+    country VARCHAR(100),
+    vendor_id INT REFERENCES vendor(vendor_id)
+);
+
+CREATE TABLE vendor_bank_info (
+    bank_name VARCHAR(50),
+    acc_no VARCHAR(15),
+    PRIMARY KEY (bank_name, acc_no),
+    acc_holder_name VARCHAR(50) NOT NULL,
+    ifsc_no VARCHAR(20) NOT NULL,
+    bank_branch VARCHAR(50) NOT NULL,
+    acc_type VARCHAR(15) NOT NULL,
+    status BOOLEAN DEFAULT TRUE,
+    vendor_id INT REFERENCES vendor(vendor_id)
+);
+
+CREATE TABLE vendor_upi_info (
+    id SERIAL PRIMARY KEY,
+    upi_id VARCHAR(50) UNIQUE NOT NULL,
+    name VARCHAR(100),
+    mobile_no VARCHAR(20) NOT NULL,
+    status BOOLEAN DEFAULT TRUE,
+    vendor_id INT REFERENCES vendor(vendor_id)
+);
+
+CREATE TABLE material_section (
+    section_id SERIAL PRIMARY KEY,
+    section_type VARCHAR(50) NOT NULL,
+    material_grade VARCHAR(20) NOT NULL,
+    description TEXT
+);
+
+CREATE TABLE vendor_material_supply_history (
+    material_id SERIAL PRIMARY KEY,
+    width FLOAT,
+    height FLOAT,
+    thickness FLOAT,
+    diameter FLOAT,
+    net_weight DOUBLE NOT NULL,
+    dispatch_date DATE NOT NULL,
+    section_id INT REFERENCES material_section(section_id),
+    vendor_id INT REFERENCES vendor(vendor_id)
+);

@@ -1,0 +1,145 @@
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@Entity
+@Table(name = "vendor", schema = "sbf",uniqueConstraints = @UniqueConstraint(columnNames = {"vendorName","email","gstNo"}))
+public class Vendor {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long vendorId;
+
+    @NotBlank(message = "Vendor name cannot be empty")
+    @NotNull(message = "Vendor name cannot be null")
+    @NotEmpty(message = "Vendor name is required")
+    @Size(max = 100, message = "Vendor name cannot exceed 100 characters")
+    @Column(name = "vendor_name")
+    private String vendorName;
+
+    
+    @Email(message = "Invalid email format")
+    @Size(max = 100, message = "Email cannot exceed 100 characters")
+    @Column(name = "email")
+    private String email;
+
+    
+    @NotBlank(message = "Contact name cannot be empty")
+    @NotNull(message = "Contact name cannot be null")
+    @NotEmpty(message = "Contact name is required")
+    @Size(max = 50, message = "Contact name cannot exceed 50 characters")
+    @Column(name = "contact_name")
+    private String contactName;
+
+    
+//    @NotBlank(message = "Contact title cannot be empty")
+//    @NotNull(message = "Contact title cannot be null")
+//    @NotEmpty(message = "Contact title is required")
+//    @Size(max = 50, message = "Contact title cannot exceed 50 characters")
+//    @Column(name = "contact_title")
+//    private String contactTitle;
+
+    
+    @NotNull(message = "Phone number cannot be null")
+    @NotBlank(message = "Phone number cannot be empty")
+    @NotEmpty(message = "Phone number is required")
+    @Pattern(regexp = "\\+[0-9]{1,2}[0-9]{10,}", message = "Invalid phone number format")
+    @Column(name = "phone_no")
+    private String phoneNo;
+
+    
+    @NotNull(message = "Mobile number cannot be null")
+    @NotBlank(message = "Mobile number cannot be empty")
+    @NotEmpty(message = "Mobile number is required")
+    @Pattern(regexp = "\\+[0-9]{1,2}[0-9]{10,}", message = "Invalid mobile number format")
+    @Column(name = "mobile_no")
+    private String mobileNo;
+
+    
+    @NotBlank(message = "GST number cannot be empty")
+    @NotNull(message = "GST number cannot be null")
+    @NotEmpty(message = "GST number is required")
+    @Column(name = "gst_no")
+    @Size(max = 20)
+    private String gstNo;
+
+    
+    @CreatedDate
+    @Column(name = "start_date")
+    private Date startDate;
+
+    
+    @NotBlank(message = "End date cannot be empty")
+    @NotNull(message = "End date cannot be null")
+    @NotEmpty(message = "End date is required")
+    @Column(name = "end_date")
+    private Date endDate;
+
+    
+    private Boolean status = true;
+
+    @OneToMany(mappedBy = "vendor", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<VendorAddress> addresses;
+    
+    @ManyToOne
+    @JoinColumn(name = "contact_type_id",referencedColumnName = "typeId")
+    private ContactType contactType;
+}
+
+
+
+
+=================================================================================
+
+
+
+
+@Getter
+@Setter
+@AllArgsConstructor
+@RequiredArgsConstructor
+@Entity
+@Table(name = "vendor_address", schema = "sbf")
+public class VendorAddress {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer addressId;
+
+    @NotBlank(message = "Street name cannot be empty")
+    @NotNull(message = "Street name cannot be null")
+    @NotEmpty(message = "Street name is required")
+    @Size(max = 100, message = "Street name cannot exceed 100 characters")
+    private String streetName;
+
+    @NotNull(message = "City cannot be null")
+    @NotBlank(message = "City cannot be empty")
+    @NotEmpty(message = "City is required")
+    @Size(max = 50, message = "City cannot exceed 50 characters")
+    private String city;
+
+    @NotNull(message = "State cannot be null")
+    @NotBlank(message = "State cannot be empty")
+    @NotEmpty(message = "State is required")
+    @Size(max = 50, message = "State cannot exceed 50 characters")
+    private String state;
+
+    @NotNull(message = "Pincode cannot be null")
+    @NotBlank(message = "Pincode cannot be empty")
+    @NotEmpty(message = "Pincode is required")
+    @Pattern(regexp = "\\d{5}(-\\d{4})?", message = "Invalid pincode format")
+    private String pinCode;
+
+    @NotBlank(message = "Country cannot be empty")
+    @Size(max = 100, message = "Country cannot exceed 100 characters") // Optional validation
+    private String country;
+
+    @ManyToOne
+    @JoinColumn(name = "vendorId", referencedColumnName = "vendorId")
+    private Vendor vendor;
+
+}
+
+
+
+========================================================================================================

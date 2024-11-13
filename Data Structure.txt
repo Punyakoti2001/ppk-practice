@@ -1,0 +1,59 @@
+ Non-linear data-Structure:
+--------------------------
+
+Tree: A tree represents a hierarchical tree structure with a set of connected nodes.
+=====
+->Each node in the tree can be connected to many children but .cildren must be connected to exactly one parent,
+     except for the root node,Which has no parent.
+
+
+BinaryTree:
+===========
+
+recursive:
+ 
+->pre-order->root,left,right
+->In-order->left,root,right
+->post-order->left,right,root
+
+Tree Traversal(2 ways)
+-----------------
+->Recursive  -Pre-order,In-order,Post-order.(Depth first tree)
+->Iterative  -Level order travesal.(breadth first Tree)
+
+ Hashing
+=========
+
+ There will be a collision of hash index values.
+->collision means Two k,v pairs get mapped with same bucket,.
+->can't avoid collisions,, but chances of collision can be reduced using "Good Hashing Function".
+
+=>Collision Handling Scheme:
+  --------------------------
+techinices:
+1)Separate chaining
+
+
+ Good  hash Fn:
+---------------
+=>Uniform distribution 
+=>fast to complete
+
+ex:sum of the asci values of the letters modulo size of the Tree or Array.
+
+   ->DOSA  =>(asci(D)+....+asci(A))%TS   =>Tree Size
+
+Ex-2:  weighted Addition   (Taking any prime number)
+-----
+  DOSA=
+            (29^0 .D + 29^1 .O + 29^2 .S + 29^3 .A)%TS
+
+
+
+Graphs
+======
+
+Adjacency MAtrix Representation(Undirected Graph)
+---------------------------------------------------
+
+ 

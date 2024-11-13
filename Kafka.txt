@@ -1,0 +1,121 @@
+Apache Kafka use cases
+======================
+->Asynchronous messaging
+->Real-time stream processing 
+->Logging and monitoring
+->Event sourcing
+->Real-time analytics
+
+docker commands
+===============
+docker-compose -f filename.yml up -d 
+docker ps
+docker-compose -f filename.yml down -d 
+
+kafka Messages
+==============
+->we can call it as a Event 
+->Unit of data
+    -Row ,record,map,blob
+->Byte array
+   -Structure imposed publisher and understood by consumer.
+->size limit exist in kafka(max.messae.bytes)
+->can be batch for efficiency.
+
+Message Content
+===============
+
+->Key
+    -Need not be unique
+    -Used for partitioning
+
+->value
+    -content of the message
+    -User defined
+->Time stamp
+    -Automatically time-stamped
+    -Event time vs ingestion time
+
+Event-Time : when the producer creates the timestamp
+-----------
+Ingestion-Time: When the kafka broker timestamps it.
+--------------
+
+
+Messages Ex:
+============
+          message1: 
+key =101
+ value={
+         "id":101,
+         "name":"bob"                         
+        }
+
+message2: 
+value="dskfdksfis","dsfdff","dvsvds"
+ if there is no key the kafka will assign some default one to it.
+
+message3: key="customer101"
+          value=10101010101101001(it is a image which is in bytes.
+
+
+
+Topics:
+=======
+Topics in kafka holds and manages the messages
+
+Brokers in kafka:
+================ 
+ A running Kafka instance.
+ Listen on a specific port.
+ Receive messages and stores
+ Subscription management
+ manage topics, partitions , and logs
+ clustering capabilities
+ Replica of the topics in the broker within the cluster
+
+Logs in Kafka:
+=============
+-> Physical files for storing data.
+->Managed by kafka brokers.
+->Multiple files(by broker,topic,partition)
+For every kafka broker there will be log directory.  
+->Rollin files.
+
+Producers
+=========
+->Any client that publishes data to kafka.
+First we need to add dependency kafka client library to the producers.
+->Client libraries for programming languages.
+->Multi concurrent producers per topic.
+->Message key identification.
+->Message serialization to bytes.
+
+Consumers
+=========
+Consume messages from kafka.
+Consume any time(Streaming/batch case)
+client libraries by programming language
+<Multiple concurrent consumers per topic
+workload scaling wit consumer groups.
+Deserialize bytes to data structures.
+Offset management.
+
+
+Partitions in Kafka
+===================
+->Each topic cab have 1-n partitions
+->Partitions allow kafka to scale
+->Partitions have seperate log files
+->Each partition has a leader broker
+->Enable consumers to share workLoads through consumer groups.
+->Partitions can be replicated for fault tolarence purposes.
+
+THings to note about partitons
+==============================
+->Each message goes to only one partition
+->Message ordering guaranteed eithin a partition only
+->Partiton count cannot be decreased after topic creation.
+
+
+    

@@ -1,0 +1,57 @@
+Testing Controller
+==================
+GET Method:
+-----------  @WebMvcTest(ClassName.class)
+
+private MockMvc mockMvc   ->@Autowire
+
+          when(methodName).thenReturn(sampleOutput);
+try{
+this.mockMvc.perform(get(end-point)).andDo(print())
+            .andExpected(status().ok());
+}
+catch(Exception e)
+{
+
+}
+
+POST & PUT method:
+------------   
+first we need to convert object to string then we need to perform 
+our operation.
+ 
+ObjectMapper mapper = new ObjectMapper():
+
+   => ObjectMapper->This class is from the jackson Library.It is used to convert JavaObject to JSon and vice-versa.
+
+mapper.configure(SerializationFeature.WRAP_ROOT_VALUE,flase);
+ 
+   => JSON should be wrapped in a single property,usually matching te class name.
+      Setting this to "false" means that the JSON will not be wrapped.
+
+ObjectWriter ow = mapper.writer().withDefaultPrettyPrinter();
+
+   =>It is used to write JSON output with custom settings , like formatting for readability) usig "withDefaultPrettyPrinter()".
+
+String jsonRequest = ow.writeValueAsString(referenceOf Object);
+   =>Converts the Object into JSON string
+
+mockMvc.perform(post(end-point)).contentType(MediaType.Application_Json).content(jsonRequest).andDo(print()).andExpect(Status().isCreated());
+
+
+Testing Service
+===============
+
+@ExtendWith(SpringExtention.class)
+
+@Mock
+private RepositoryLayer repLayer;
+
+@InjectMocks
+private serviceLayerImpl serviceLayer;
+
+when(repLayer.methodName()).thenReturn(wantedOutput);
+
+serviceLayer.methodName();
+
+assertThat().isEqualsTO("" );

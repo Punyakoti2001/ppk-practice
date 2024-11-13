@@ -1,0 +1,16 @@
+AWS
+====
+=>capital Expenditure
+=>Operational Expenditure
+
+Cloud can be considered CapEx when large one-time purchases are made for fixed assets, 
+like infrastructure for an on-premises data center. On the other hand, 
+cloud can be OpEx when costs are tied to day-to-day operations, 
+like a monthly cloud-based application subscription.
+
+Types of cloud 
+--------------
+1)public
+2)private
+3)Hybrid
+4)community cloud

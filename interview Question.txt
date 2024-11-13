@@ -1,0 +1,27 @@
+1)What were your primary roles and responsibilities in this project?
+
+2)What challenges did you face during this project and how did you overcome them?
+
+3)What is the role of Apache Tomcat in your project?
+
+4)How did you ensure security in the application?
+
+5)What kind of test cases did you implement using JUnit and Which Version of JUnit you used in your project?
+
+6)How did you use Postman and Swagger in your project?
+
+7)Describe a situation where you had to work closely with other team members to achieve a goal.
+
+  Planning: We had meetings to split the tasks and used Jira to track progress.
+  ---------
+  Communication: We had daily check-ins to discuss updates and solve problems. We also used Slack for quick messages.
+  -------------
+  Collaboration: I worked closely with backend developers to connect the UI with the database, using tools like Postman for testing.
+  -------------
+  Pair Programming: We teamed up to solve tricky issues together.
+  ----------------
+  Testing: After building the feature, we tested it together and made improvements based on feedback.
+  --------
+
+8)How did you manage state in your React application?
+

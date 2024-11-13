@@ -1,0 +1,57 @@
+package com.zettamine.practice;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+public class Sample3 {
+    
+    // Function to find all unique combinations that sum up to the target
+    public void findCombination(int idx, int target, int[] arr, List<Integer> list, List<List<Integer>> store) {
+        if (target == 0) {
+            // Add a copy of the current list to the store when the target is met
+            store.add(new ArrayList<>(list));
+            return;
+        }
+
+        // Iterate over the array elements starting from index `idx`
+        for (int i = idx; i < arr.length; i++) {
+           
+            if (i > idx && arr[i] == arr[i - 1]) {
+                continue;
+            }
+
+            // Stop further exploration if the current element exceeds the target
+            if (arr[i] > target) {
+                break;  // Since the array is sorted, no point in checking further
+            }
+
+            // Choose the current element and explore further
+            list.add(arr[i]);
+
+            // Recur with updated target and move to the next index
+            findCombination(i + 1, target - arr[i], arr, list, store);
+
+            // Backtrack: remove the last added element to try the next combination
+            list.remove(list.size() - 1);
+        }
+    }
+
+    public static void main(String[] args) {
+        Sample3 s = new Sample3();
+        
+        int[] arr = {10, 1, 2, 7, 6, 1, 5};
+
+        // Sort the array to facilitate duplicate handling
+        Arrays.sort(arr);
+
+        List<List<Integer>> store = new ArrayList<>();
+        List<Integer> currentCombination = new ArrayList<>();
+
+        // Call the recursive function to find all combinations that sum to 8
+        s.findCombination(0, 8, arr, currentCombination, store);
+
+        // Print the unique combinations
+        System.out.println(store);
+    }
+}

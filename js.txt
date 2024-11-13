@@ -1,0 +1,16 @@
+What is window or this?
+A. When ever the the Global Execution context is created the window object is created.
+   ->what ever we write a code out side the function those code are in the Global space.
+
+
+Event Looping
+=============
+ ->call Stack
+ ->Web Ap's
+  -setTimeout()
+  -DOM APIs
+  -fetch
+  -console
+->EventLoop
+->callBack Queue
+->Microtask Queue  -It has high priority than the callBack Queue.  The promise callBack functions will get store in these.

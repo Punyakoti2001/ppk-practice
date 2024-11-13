@@ -1,0 +1,663 @@
+session factory : -
+-----------------
+
+A SessionFactory represents an "instance" of Hibernate: it maintains the runtime metamodel representing persistent entities, 
+their attributes, their associations, and their mappings to relational database tables, along with configuration that affects 
+the runtime behavior of Hibernate, and instances of services that
+
+session :
+-------
+The main runtime interface between a Java application and Hibernate. Represents the notion of a persistence context, a set of managed entity instances associated with a logical transaction. 
+
+The lifecycle of a Session is bounded by the beginning and end of the logicaltransaction. But a long logical transaction might span several database transactions. 
+
+The primary purpose of the Session is to offer create, read, and deleteoperations for instances of mapped entity classes. An instance may be in one of threestates with respect to a given open session: 
+•transient: never persistent, and not associated with the Session, 
+•persistent: currently associated with the Session, or 
+•detached: previously persistent, but not currently associated with the Session
+
+transaction : -
+----------------
+Represents a resource-local transaction, where resource-local is interpretedby Hibernate to mean any transaction under the control of Hibernate. That is to say,the underlying transaction might be a JTA transaction, or it might be a JDBC transaction,depending on how Hibernate is configured. 
+
+Every resource-local transaction is associated with a Session and begins withan explicit call to Session.beginTransaction(), or, equivalently, with session.getTransaction().begin(), and ends with a call to commit()or rollback(). 
+
+A single session might span multiple transactions since the notion of a session(a conversation between the application and the datastore) is of coarser granularitythan the concept of a database transaction. However, there is at most one uncommittedtransaction associated with a given Session at any time. 
+
+Note that this interface is never used to control container managed JTA transactions,and is not usually used to control transactions that affect multiple resources. 
+
+A Transaction object is not threadsafe.
+
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+
+Unidirectional Association	Bidirectional Association
+Definition	A relationship between two tables where one table has a foreign key that references the primary key of another table.	A relationship between two tables where both tables have a foreign key that references the primary key of the other table.
+Navigation	Only navigable in one direction – from the child table to the parent table.	Navigable in both directions – from either table to the other.
+Performance	Generally faster due to simpler table structure and fewer constraints.	Generally slower due to additional constraints and table structure complexity.
+Data Consistency	Ensured by the foreign key constraint in the child table referencing the primary key in the parent table.	Ensured by the foreign key constraint in the child table referencing the primary key in the parent table.
+Flexibility	Less flexible as changes in the child table may require changes to the parent table schema.	More flexible as changes in either table can be made independently without affecting the other.
+
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+
+hbm.xml file under com/main/resources
+------------
+hinernate mapping class data members to entity fields
+
+<?xml version="1.0" encoding="UTF-8"?>
+
+<hibernate-mapping>
+	<class name="com.zettamine.hibernate.entities.Student" table="student">
+		<id name="studentId" column="stu_id">
+			<!--  <generator class="assigned" />-->
+			<generator class="increment" />
+		</id>
+		<property name="studentName" column="stu_name" />
+		<property name="studentEmail" column="stu_email" />
+
+	</class>
+</hibernate-mapping>
+
+hiberbate.cfg.xml file   under com/main/resources
+-------------------------
+<?xml version="1.0" encoding="UTF-8"?>
+
+<hibernate-configuration>
+	<session-factory>
+		<!-- DB properties -->
+
+		<property name="connection.driver_class">org.postgresql.Driver</property>
+		<property name="connection.url"> jdbc:postgresql://localhost:5432/db_zettamine</property>
+		<property name="connection.username">postgres</property>
+		<property name="connection.password">5432</property>
+
+		<!-- Hibernate Properties -->
+		<property name="dialect">org.hibernate.dialect.PostgreSQLDialect</property>
+		<property name="show_sql">true</property>
+		<property name="hbm2ddl.auto">update</property>
+
+		<!-- Mapping Resource Details 
+		<mapping class="com.zettamine.hibernate.entities.Product" />
+		<mapping resource="student.hbm.xml" /> 
+		<mapping class="com.zettamine.entities.Person" />
+		<mapping class="com.zettamine.entities.Passport" /> -->
+		<mapping class="com.zettamine.entities.Faculty" />
+		<mapping class="com.zettamine.entities.Batch" />
+
+	</session-factory>
+</hibernate-configuration>
+
+our own generatin sequnce :-
+-------------------------
+        @Id
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "pid_generator")
+	@SequenceGenerator(name ="pid_generator", sequenceName = "prod_sequence", initialValue = 100, allocationSize = 1)
+
+Hibernate core dependency 
+-------------------------
+                 <dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-core</artifactId>
+			<version>6.4.1.Final</version>
+			<!-- 	<type>pom</type> -->
+		</dependency>
+
+Hiberante utility class provides sessin factory : -
+-----------------------------------------------
+public class HibernateUtility {
+
+	private static SessionFactory sessionFactory;
+
+	public static SessionFactory getSessionFactory() {
+
+		if (sessionFactory == null) {
+			Configuration config = new Configuration();
+			config.configure();
+			sessionFactory = config.buildSessionFactory();
+		}
+
+		return sessionFactory;
+	}
+}
+
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+
+Hibernate Caching
+=================
+
+Caching is all about application performance optimization and it sits between your application and the database to avoid the number of database hits as many as possible to give a better performance for performance critical applications.
+
+Hibernate Caching
+
+1) First-level cache:
+---------------------
+The first-level cache is the Session cache and is a mandatory cache through which all requests must pass. The Session object keeps an object under its own power before committing it to the database.
+
+If you issue multiple updates to an object, Hibernate tries to delay doing the update as long as possible to reduce the number of update SQL statements issued. If you close the session, all the objects being cached are lost and either persisted or updated in the database.
+
+2) Second-level cache:
+---------------------
+
+Second level cache is an optional cache and first-level cache will always be consulted before any attempt is made to locate an object in the second-level cache. The second-level cache can be configured on a per-class and per-collection basis and mainly responsible for caching objects across sessions.
+
+Hibernate second level cache uses a common cache for all the session object of a session factory. It is useful if you have multiple session objects from a session factory.
+
+SessionFactory holds the second level cache data. It is global for all the session objects and not enabled by default.
+
+Different vendors have provided the implementation of Second Level Cache.
+
+    EH Cache
+    OS Cache
+    Swarm Cache
+    JBoss Cache
+
+Each implementation provides different cache usage functionality. There are four ways to use second level cache.
+
+    read-only: caching will work for read only operation.
+    nonstrict-read-write: caching will work for read and write but one at a time.
+    read-write: caching will work for read and write, can be used simultaneously.
+    transactional: caching will work for transaction.
+
+
+
+3 extra steps for second level cache using EHCache
+
+1) Include the optional jar files of EHCache
+ - ehcache-2.10.6.jar
+ - hibernate-ehcache-5.4.32.Final
+ - slf4j-api-1.7.25.jar
+   OR
+<dependency>
+    <groupId>org.hibernate</groupId>
+    <artifactId>hibernate-ehcache</artifactId>
+    <version>5.6.10.Final</version>
+</dependency>
+
+
+2) Add 3 configuration setting in hibernate.cfg.xml file
+
+<!-- Hibernate properties -->
+<property name="hibernate.cache.use_second_level_cache">true</property>
+<property name="cache.provider_class">org.hibernate.cache.EhCacheProvider</property>
+<property name="hibernate.cache.region.factory_class">org.hibernate.cache.ehcache.EhCacheRegionFactory</property>
+
+3) Add cache usage setting in hbm file
+<class name="co.xyz.hibernate.entity.Student" table="student">
+   <cache usage="read-only"/>
+
+
+
+3) Query Level Cache
+setCacheable(boolean) is a method of org.hibernate.query.Query
+--------------------------------------------------------------
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+
+Object Relational Mapping with Hibernate
+==========================================
+
+-> how to work with relationships between entities in Hibernate
+
+1) One-to-One Relationship 
+2) One-to-Many Relationship
+3) Many-to-Many Relationship
+
+Spring also provides JPA and hibernate to increase the data manipulation efficiency between the spring application and the database. 
+
+In very simple terms we can say JPA (Java persistence API) is like an interface and the hibernate is the implementation of the methods of the interface-
+
+<property name="connection.pool_size">1</property>
+
+Fetch Types in Hibernate
+------------------------
+EAGER - Load the associated data of the other entity, beforehand which is bit costly.
+LAZY - Load the associated data of the other entity, only when requested. This is done on demand.
+
+. In eager loading strategy, if we load the User data, it will also load up all orders associated with it and will store it in a memory.
+
+But when we enable lazy loading, if we pull up a UserLazy, OrderDetail data won’t be initialized and loaded into a memory until we make an explicit call to it.
+
+With the lazy initialization approach, orderDetailSet will get initialized only when we explicitly call it, using a getter or some other method:
+
+Example: If we have a relationship between university and student, when university data is fetched, we don't want to fetch students right? Because, one university will have thousands of students in the students array in the mapping. It will be a very costly operation. So, we can tell hibernate to keep it with LAZY initialization.
+
+Cascading in Hibernate - 
+----------------------
+Cascading in Hibernate refers to the automatic persistence of related entities. When a change is made to an entity, such as an update or deletion, the changes can be cascaded to related entities as well. 
+Cascading in JPA coordinates actions between interconnected entities
+
+For example, if you have a Customer entity that has a one-to-many relationship with an Order entity, you can define cascading to specify that when a Customer is deleted, all of their orders should be deleted as well.
+
+When a change is made to an entity, such as an update or deletion, the changes can be cascaded to related entities as well. Cascading can be configured using annotations, such as @OneToMany(cascade = CascadeType.ALL), or through XML configuration files. It is important to use cascading carefully, as it can lead to unwanted changes being made to related entities if not configured properly.
+
+Hibernate provides several types of cascade options that can be used to manage the relationships between entities.
+
+Here are the different cascade types in Hibernate:
+
+-> CascadeType.ALL
+-> CascadeType.PERSIST
+-> CascadeType.MERGE
+-> CascadeType.REMOVE
+-> CascadeType.REFRESH
+-> CascadeType.DETACH
+-> CascadeType.REPLICATE  - not in Hibernate 6
+-> CascadeType.SAVE_UPDATE  - not in Hibernate 6
+
+CascadeType.PERSIST : Both save() or persist() operations cascade to related entities.
+CascadeType.MERGE : Related entities are merged when the ownership entity is merged.
+CascadeType.REFRESH : Does same thing for the refresh() operation.
+CascadeType.REMOVE : Removes all related entities association with this setting when the ownership entity is deleted.
+CascadeType.DETACH : Detaches all related entities if a "manual detach" occurs.
+CascadeType.ALL : All of the above cascade operations.
+
+There is NO DEFAULT CASCADE TYPE in JPA. By default, no operation is cascaded. If we want, we can use several cascade types at once also.
+
+cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH }
+
+
+1. CascadeType.ALL  --> is a cascading type in Hibernate that specifies that all state transitions (create, update, delete, and refresh) should be cascaded from the parent entity to the child entities. This means that if you persist, update, or delete a parent entity, all child entities associated with it will also be persisted, updated, or deleted accordingly.
+
+@OneToMany(mappedBy="customer", cascade=CascadeType.ALL) 
+private Set<Order> orders;
+
+This code defines a one-to-many relationship between a Customer entity and an Order entity and specifies that all state transitions should be cascaded to the associated orders. This means that when a Customer entity is saved, updated, or deleted, all of its associated Order entities will also be saved, updated, or deleted accordingly.
+
+2. CascadeType.PERSIST --> is a cascading type in Hibernate that specifies that the create (or persist) operation should be cascaded from the parent entity to the child entities.
+For example, consider a scenario where you have a Customer entity with a one-to-many relationship to Order entities. By using CascadeType.PERSIST, any new Order entities associated with a Customer entity will be persisted when the Customer entity is persisted. However, if you update or delete a Customer entity, any associated Order entities will NOT be automatically updated or deleted
+
+
+@OneToMany(mappedBy="customer", cascade=CascadeType.PERSIST) 
+private Set<Order> orders;
+
+This code defines a one-to-many relationship between a Customer entity and an Order entity and specifies that the persistent operation should be cascaded to the associated orders. This means that when a Customer entity is persisted, any new Order entities associated with it will also be persisted automatically. However, updates or deletions made to the Customer entity will not be cascaded to the associated Order entities.
+
+CascadeType.MERGE --> is a cascading type in Hibernate that specifies that the update (or merge) operation should be cascaded from the parent entity to the child entities.
+
+When CascadeType.MERGE is used, any changes made to a detached parent entity (i.e., an entity that is not currently managed by the persistence context) will be automatically merged with its associated child entities when the parent entity is merged back into the persistence context. However, new child entities that are not already associated with the parent entity will not be automatically persisted.
+For example, consider a scenario where you have a Customer entity with a one-to-many relationship to Order entities. By using CascadeType.MERGE, any changes made to a detached Customer entity (such as changes made in a different session or transaction) will be automatically merged with its associated Order entities when the Customer entity is merged back into the persistence context.
+
+
+@OneToMany(mappedBy="customer", cascade=CascadeType.MERGE) 
+private Set<Order> orders;
+
+This code defines a one-to-many relationship between a Customer entity and an Order entity and specifies that the merge operation should be cascaded to the associated orders. This means that when a detached Customer entity is merged back into the persistence context, any changes made to the Customer entity will be automatically merged with its associated Order entities. However, new Order entities that are not already associated with the Customer entity will not be automatically persisted.
+
+4. CascadeType.REMOVE --> is a cascading type in Hibernate that specifies that the delete operation should be cascaded from the parent entity to the child entities.
+
+When CascadeType.REMOVE is used, any child entities associated with a parent entity will be automatically deleted when the parent entity is deleted. However, updates or modifications made to the parent entity will not be cascaded to the child entities.
+
+For example, consider a scenario where you have a Customer entity with a one-to-many relationship to Order entities. By using CascadeType.REMOVE, any Order entities associated with a Customer entity will be automatically deleted when the Customer entity is deleted.
+
+
+@OneToMany(mappedBy="customer", cascade=CascadeType.REMOVE) 
+private Set<Order> orders;
+
+This code defines a one-to-many relationship between a Customer entity and an Order entity and specifies that the remove operation should be cascaded to the associated orders. This means that when a Customer entity is deleted, any associated Order entities will also be deleted automatically. However, updates or modifications made to the Customer entity will not be cascaded to the associated Order entities.
+
+5. CascadeType.REFRESH --> is a cascading type in Hibernate that specifies that the refresh operation should be cascaded from the parent entity to the child entities.
+
+When CascadeType.REFRESH is used, any child entities associated with a parent entity will be automatically refreshed when the parent entity is refreshed. This means that the latest state of the child entities will be loaded from the database and any changes made to the child entities will be discarded.
+
+For example, consider a scenario where you have a Customer entity with a one-to-many relationship to Order entities. By using CascadeType.REFRESH, any associated Order entities will be automatically refreshed when the Customer entity is refreshed.
+
+
+@OneToMany(mappedBy="customer", cascade=CascadeType.REFRESH) 
+private Set<Order> orders;
+
+This code defines a one-to-many relationship between a Customer entity and an Order entity and specifies that the refresh operation should be cascaded to the associated orders. This means that when a Customer entity is refreshed, any associated Order entities will also be refreshed automatically. Any changes made to the Order entities will be discarded, and the latest state of the Order entities will be loaded from the database.
+
+6. CascadeType.DETACH --> is a cascading type in Hibernate that specifies that the detach operation should be cascaded from the parent entity to the child entities.
+
+When CascadeType.DETACH is used, any child entities associated with a parent entity will be automatically detached when the parent entity is detached. This means that the child entities will become detached from the persistence context and their state will no longer be managed by Hibernate.
+
+For example, consider a scenario where you have a Customer entity with a one-to-many relationship to Order entities. By using CascadeType.DETACH, any associated Order entities will be automatically detached when the Customer entity is detached.
+
+
+@OneToMany(mappedBy="customer", cascade=CascadeType.DETACH) 
+private Set<Order> orders;
+
+7. CascadeType.REPLICATE -->  is a cascading type in Hibernate that specifies that the replicate operation should be cascaded from the parent entity to the child entities.
+
+For example, consider a scenario where you have a Customer entity with a one-to-many relationship to Order entities. By using CascadeType.REPLICATE, any associated Order entities will be automatically replicated when the Customer entity is replicated.
+
+
+@OneToMany(mappedBy="customer", cascade=CascadeType.REPLICATE) 
+private Set<Order> orders;
+
+This code defines a one-to-many relationship between a Customer entity and an Order entity and specifies that the replicate operation should be cascaded to the associated orders. This means that when a Customer entity is replicated, new Order entities will be created and persisted in the database with the same state as the original Order entities. However, any changes made to the original Order entities after the replication operation will not be replicated to the new Order entities.
+
+
+8. CascadeType.SAVE_UPDATE --> is a cascading type in Hibernate that specifies that the save or update operation should be cascaded from the parent entity to the child entities.
+
+For example, consider a scenario where you have a Customer entity with a one-to-many relationship to Order entities. By using CascadeType.SAVE_UPDATE, any associated Order entities will be automatically saved or updated when the Customer entity is saved or updated.
+
+
+@OneToMany(mappedBy="customer", cascade=CascadeType.SAVE_UPDATE) 
+private Set<Order> orders;
+
+
+-------------------- PRACTICALS ---> One-To-One Mapping ------------
+
+Usecase : relationship between Employee and Address
+Any Employee should have an Address
+Two Employees should not have the same Address
+
+In a one to one mapping, both entities are tightly coupled. 
+After the Employee is removed, we cannot use his/her Address. So we should define CascadeType as ALL(If you want to keep the Address, change it to PERSIST). Then address won't be deleted even we delete the Employee. 
+Since Hibernate decides FetchType for one to one mapping is EAGER by default
+
+Normally we record child entity primary key as the foreign key of the owner entity. So Employee should have a column in the table to record the address ID. We will give its name as "ADDRESS_ID" and its referenced by "ID" column in Address entity.
+
+
+------ Employee.java ------
+package com.modeln.mappings.oto.entity;
+@Entity
+@Data
+public class Employee {
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
+	private String emloyeeName;
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "address_id", referencedColumnName = "id")
+	private Address employeeAddress;
+}
+
+------ Address.java --------
+package com.modeln.mappings.oto.entity;
+@Entity
+@Data
+public class Address {
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
+	private String street;
+	private String city;
+	private String state;
+}
+
+------------OTONMapping.java -----------------------
+
+public class OTOMapping {
+
+	public static void main(String[] args) {
+		SessionFactory sfactory = HibernateUtils.getSessionFactory();
+		Session session = sfactory.openSession();
+		Transaction tx = session.beginTransaction();
+		
+		Employee emp = new Employee();
+		emp.setEmployeeId(103);
+		emp.setEmployeeName("Mark");
+		  
+		Address addr = new Address(); 
+		addr.setStreet("Banjara Hilld");
+		addr.setCity("Hyderabad"); 
+		addr.setState("Telangana");		  
+		  
+		emp.setAddress(addr);
+		
+		session.persist(emp);
+		
+		tx.commit();
+		session.close();
+		sfactory.close();
+	}
+
+}
+
+
+alter table employee auto_increment 100;
+
+
+------- lazy loading --------------------
+
+@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)   [Employee entity class]
+
+
+----------- to have a Bi directional one-to-one mapping  ----------
+@Entity
+@Data
+public class Address {
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
+	private String street;
+	private String city;
+	private String state;
+	
+	@OneToOne(mappedBy = "employeeAddress", , cascade = CascadeType.REMOVE)	
+	//@JsonIgnore
+	private Employee employee;
+}
+
+In the child entity(Address), we just need to link the name of the property mapped in Employee entity.
+
+"@JsonIgnore" annotation was placed there for user property since I do not need to have the user object to be seen in Address data. Just to ignore that field from JSON object.
+
+
+----------- PRACTICALS # 2 -----------------------------
+Person & Password
+
+package com.modeln.mappings.oto.entity;
+@Entity
+@Data
+public class Person {
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Integer personId;
+
+	private String personName;
+
+	private String personGender;
+
+	@OneToOne(mappedBy = "person", cascade = CascadeType.ALL)
+	private Passport passport;
+}
+
+
+package com.modeln.mappings.oto.entity;
+@Entity
+@Data
+public class Passport {
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Integer passportId;
+
+	private String passPortNum;
+
+	private LocalDate issuedDate;
+
+	private LocalDate expDate;
+	
+	@OneToOne
+	@JoinColumn(name = "person_id")
+	private Person person;
+}
+
+
+PassportRepository & PersonRepository
+
+package com.modeln.mappings.oto.services;
+@Service
+public class PersonServices {
+	@Autowired
+	private PersonRepository personRepo;
+	@Autowired
+	private PassportRepository passportRepo;
+	
+	public void saveData() {
+
+		Person person = new Person();
+		person.setPersonName("Praveen Kumar");
+		person.setPersonGender("Male");
+
+		Passport passport = new Passport();
+		passport.setPassPortNum("RS12387");
+		passport.setIssuedDate(LocalDate.now());
+		passport.setExpDate(LocalDate.now().plusYears(10));
+
+		person.setPassport(passport);
+		passport.setPerson(person);
+
+		personRepo.save(person);
+
+	}
+	
+	public void deleteById(int id) {
+		personRepo.deleteById(id);
+	}
+	
+	public void searchByPassPortId(int id) {
+		Passport pass = passportRepo.findById(id).get();
+		System.out.println(pass.getPassPortNum());
+	}
+}
+
+-------------------------- One-To-Many Mappings ------------------------------------
+
+The one-to-many mapping means that one row in a table is mapped to multiple rows in another table.
+
+We will implement one-to-many unidirectional mapping using @OneToMany and @JoinColumn JPA annotations.
+
+define a one-to-many unidirectional mapping between two entities using JPA and Hibernate.
+
+Example : Posts & Comments
+
+@Entity
+@Table(name = "posts")
+@Data
+public class Post {
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private long id;
+
+	@Column(name = "title")
+	private String title;
+
+	@Column(name = "description")
+	private String description;
+
+	@OneToMany(cascade = CascadeType.ALL)
+	@JoinColumn(name = "pc_fid", referencedColumnName = "id")
+	List<Comment> comments = new ArrayList<>();
+
+	public Post(String title, String description) {
+		super();
+		this.title = title;
+		this.description = description;
+	}
+}
+
+
+@Entity
+@Data
+@Table(name = "comments")
+public class Comment {
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private long id;
+	private String text;
+	
+	public Comment(String text) {
+		this.text=text;
+	}
+}
+
+
+
+        Comment comment1 = new Comment("Very useful");
+        Comment comment2 = new Comment("informative");
+        Comment comment3 = new Comment("Great post");
+
+        post.getComments().add(comment1);
+        post.getComments().add(comment2);
+        post.getComments().add(comment3);
+
+        this.postRepository.save(post);
+		
+	}
+}
+
+
+-------------- Example -2 Employee & Addresses ----------------------
+@Entity
+public class Employee {
+ @Id
+ @GeneratedValue(strategy = GenerationType.IDENTITY)
+ private Integer empId;
+
+ private String empName;
+
+ private Double salary;
+
+ @OneToMany(mappedBy = "emp", cascade = CascadeType.ALL)
+ private List<Address> addr;
+}
+
+
+@Entity
+public class Address {
+ @Id
+ @GeneratedValue(strategy = GenerationType.IDENTITY)
+ private Integer addrId;
+
+ private String city;
+
+ private String state;
+
+ private String type;
+
+ @ManyToOne
+ @JoinColumn(name = "emp_id")
+ private Employee emp;
+}
+
+
+@Service
+public class EmployeeService {
+ @Autowired
+ private EmpRepo empRepo;
+
+ @Autowired
+ private AddressRepo addrRepo;
+
+ public void deleteEmp() {
+  empRepo.deleteById(1);
+ }
+
+ public void getAddrData() {
+  Optional<Address> findById = addrRepo.findById(1);
+ }
+
+ public void getEmpData() {
+   Optional<Employee> findById = empRepo.findById(1);
+ }
+
+ public void saveEmpData() {
+  Employee emp = new Employee();
+  emp.setEmpName("John");
+  emp.setSalary(1000.00);
+  
+  Address a1 = new Address();
+  a1.setCity("Hyd");
+  a1.setState("TG");
+  a1.setType("Present");
+  a1.setEmp(emp); // setting emp to addr
+
+  Address a2 = new Address();
+  a2.setCity("GNT");
+  a2.setState("AP");
+  a2.setType("Permanent");
+  a2.setEmp(emp); // setting emp to addr
+
+  List<Address> addrList = Arrays.asList(a1, a2);
+  emp.setAddr(addrList); // setting addr list to emp
+
+  empRepo.save(emp);
+
+}
+}
+
+
+---------- Hibernate Many to Many Example  ----------------------
+In many-to-many association, the source entity has a field that stores a collection of target entities. The @ManyToMany JPA annotation is used to link the source entity with the target entity.
+
+A many-to-many association always uses an intermediate join table to store the association that joins two entities. The join table is defined using the @JoinTable JPA annotation.

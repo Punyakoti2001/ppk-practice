@@ -1,0 +1,56 @@
+-vertical scaling,horizontal scaling
+-cloud native
+-12 factor methodology
+-security with OAUTH 2.1 and openID connect
+
+  AVEVA
+
+
+
+OOPS
+https://medium.com/@AlexanderObregon/a-guide-to-object-oriented-programming-in-java-89dc4544837f#:~:text=The%20four%20fundamental%20principles%20of,hidden%20from%20the%20outside%20view.
+
+Docker and some topics 
+https://medium.com/edureka/docker-commands-29f7551498a8
+
+Maven
+https://medium.com/edureka/maven-tutorial-2e87a4669faf 
+
+javascript
+https://javascriptcentric.medium.com/top-30-javascript-interview-questions-and-answers-for-2024-7f1e2d1d0638
+
+PUT and PATCH (using reflection)
+---------------------------------
+https://medium.com/@devchopra999/handling-patch-requests-efficiently-in-springboot-3db06e4783e2
+
+Dealing with Race Condition in Spring Boot
+----------------------------------------------
+https://medium.com/@ariprayoga007/dealing-with-race-condition-in-spring-boot-3c3fd615e35a
+
+Configuring multiple datasources in Spring Boot Application
+------------------------------------------------------------
+https://medium.com/@kavyababu/configuring-multiple-datasources-in-spring-boot-application-b35967900434
+
+15 + 11 Mistakes Every Java Developer MUST avoid TODAY
+-------------------------------------------------------
+https://medium.com/gitconnected/15-11-mistakes-every-java-developer-must-avoid-today-ccd7e681a970
+
+How can you prepare effectively for your next Java Threads and Concurrency interview?
+----------------------------------------------------------------------------------------
+https://medium.com/gitconnected/how-can-you-prepare-effectively-for-your-next-java-threads-and-concurrency-interview-ecf40bcded0c
+
+
+Cisco Java Developer Interview Transcript 2024(Java,Spring-Boot,Hibernate)
+--------------------------------------------------------------------------
+https://medium.com/@rathod-ajay/cisco-java-developer-interview-transcript-2024-java-spring-boot-hibernate-34ed516ae32d
+
+Mastering Design Patterns in Java
+---------------------------------
+https://medium.com/javarevisited/mastering-design-patterns-in-java-1e39194ac480
+https://medium.com/javarevisited/mastering-design-patterns-in-java-1e39194ac480
+
+
+How To Migrate From Monolithic To Microservices(Part-I)
+--------------------------------------------------------
+https://medium.com/@puneet.vyas/how-to-migrate-from-monolithic-to-microservices-part-i-bd0645a7c529
+
